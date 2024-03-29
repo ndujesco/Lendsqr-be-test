@@ -1,5 +1,9 @@
 import app from './app';
+import * as dotenv from 'dotenv';
 import { Application } from 'express';
+
+dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+console.log(process.env.PENNY);
 
 class Server {
   private port = process.env.PORT || 3000;

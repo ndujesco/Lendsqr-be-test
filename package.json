@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node src/index.ts",
-    "start:dev": "clear && nodemon source/index.ts"
+    "start:dev": "clear && crossenv NODE_ENV=development nodemon source/index.ts"
   },
   "author": "Ndujekwu Ugochukwu Peter",
   "license": "MIT",
@@ -16,6 +16,7 @@
     "typescript": "^5.4.3"
   },
   "dependencies": {
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "knex": "^3.1.0",
     "mysql": "^2.18.1"

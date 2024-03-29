@@ -4,8 +4,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node src/index.ts",
-    "start:dev": "clear && crossenv NODE_ENV=development nodemon source/index.ts"
+    "start": "ts-node source/index.ts",
+    "start:dev": "clear && cross-env NODE_ENV=development nodemon source/index.ts",
+    "migrate:latest:dev": "cross-env NODE_ENV=development knex --knexfile source/database/knexfile.ts migrate:latest"
   },
   "author": "Ndujekwu Ugochukwu Peter",
   "license": "MIT",

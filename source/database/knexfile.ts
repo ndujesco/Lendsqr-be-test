@@ -1,47 +1,39 @@
-import type { Knex } from "knex";
+import * as dotenv from 'dotenv';
 
+import type { Knex } from 'knex';
+
+
+//the working directory was changed to .../source/database, hence the relative filepath
+dotenv.config({ path: `../../.env.${process.env.NODE_ENV}` });
+
+const { DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_NAME } = process.env;
 // Update with your config settings.
 
-const config: { [key: string]: Knex.Config } = {
+const configs: { [key: string]: Knex.Config } = {
   development: {
-    client: "sqlite3",
+    client: 'mysql',
     connection: {
-      filename: "./dev.sqlite3"
-    }
-  },
-
-  staging: {
-    client: "postgresql",
-    connection: {
-      database: "my_db",
-      user: "username",
-      password: "password"
-    },
-    pool: {
-      min: 2,
-      max: 10
+      host: DB_HOST,
+      port: Number(DB_PORT),
+      user: DB_USER,
+      password: DB_PASS,
+      database: DB_NAME,
     },
     migrations: {
-      tableName: "knex_migrations"
-    }
+      directory: './source/migrations',
+    },
   },
 
   production: {
-    client: "postgresql",
+    client: 'mysql',
     connection: {
-      database: "my_db",
-      user: "username",
-      password: "password"
+      host: DB_HOST,
+      port: Number(DB_PORT),
+      user: DB_USER,
+      password: DB_PASS,
+      database: DB_NAME,
     },
-    pool: {
-      min: 2,
-      max: 10
-    },
-    migrations: {
-      tableName: "knex_migrations"
-    }
-  }
-
+  },
 };
 
-module.exports = config;
+export default configs;

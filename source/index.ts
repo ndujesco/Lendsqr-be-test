@@ -1,8 +1,10 @@
 import app from './app';
 import * as dotenv from 'dotenv';
 import { Application } from 'express';
+import logger from './utils/winston';
 
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+
 
 class Server {
   private port = process.env.PORT || 3000;
@@ -14,7 +16,7 @@ class Server {
 
   start() {
     this.app.listen(this.port, () => {
-      console.log(`Server listening on port ${this.port}`);
+      logger.info(`Server listening on port ${this.port}`);
     });
   }
 }

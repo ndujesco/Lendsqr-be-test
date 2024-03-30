@@ -16,7 +16,7 @@ import { KarmaService } from '../service/karma';
 import { Helper } from '../utils/helper';
 import { EmailService } from '../service/email';
 
-export default class AuthController {
+export class AuthController {
   static async signUp({ body }: Request, res: Response) {
     const {
       email,
@@ -71,7 +71,7 @@ export default class AuthController {
     res.json({
       message: 'Email verified!',
       success: true,
-      data: Helper.omitSensitiveUserInfo({ ...user, accessToken }),
+      data: Helper.omitUserInfo({ ...user, accessToken }),
     });
   }
 
@@ -94,9 +94,12 @@ export default class AuthController {
       throw new AuthError('The email is already in use');
 
     const otp = Helper.generateRandomOtp();
-    const where = { email, otp, isVerified: false };
+    const update = { email, otp, isVerified: false };
 
-    await UserRepository.updateOne({ where, update: { email } });
+    await UserRepository.updateOne({
+      where: { userId },
+      update,
+    });
     await EmailService.sendOtp({ to: email, otp, name: foundUser.firstName });
 
     foundUser.email = email; // for the response
@@ -104,7 +107,7 @@ export default class AuthController {
     res.json({
       message: 'Email updated successfully! An otp has been sent to the mail',
       success: true,
-      data: Helper.omitSensitiveUserInfo({ ...foundUser, email }),
+      data: Helper.omitUserInfo({ ...foundUser, email }),
     });
   }
 
@@ -123,6 +126,7 @@ export default class AuthController {
   }
 
   static async signIn({ body }: Request, res: Response) {
+    let accessToken;
     const { email, password } = body as SignInDto;
 
     const user = await UserRepository.findOneBy({ email });
@@ -131,14 +135,14 @@ export default class AuthController {
     const passwordMatches = await comparePassword(password, user.password);
     if (!passwordMatches) throw new AuthError('Invalid email or password.');
 
-    if (!user.isVerified) throw new AuthError('Email not verified');
-
-    const accessToken = createJWT(user);
+    if (user.isVerified) {
+      accessToken = createJWT(user);
+    }
 
     res.json({
       message: 'Sign in successful!',
       success: true,
-      data: Helper.omitSensitiveUserInfo({ ...user, accessToken }),
+      data: Helper.omitUserInfo({ ...user, accessToken }),
     });
   }
 }

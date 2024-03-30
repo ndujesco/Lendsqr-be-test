@@ -1,7 +1,12 @@
 import { Router } from 'express';
 import RequestValidator from '../middleware/validation';
-import { SignInDto, SignUpDto, UpdateEmailDto, VerifyEmailDto } from '../dto/auth';
-import AuthController from '../controller/auth';
+import {
+  SignInDto,
+  SignUpDto,
+  UpdateEmailDto,
+  VerifyEmailDto,
+} from '../dto/auth';
+import { AuthController } from '../controller/auth';
 
 import 'express-async-errors';
 

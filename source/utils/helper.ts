@@ -30,8 +30,8 @@ export class Helper {
   </div>`;
   }
 
-  static omitSensitiveUserInfo(input: any) {
-    const { password, otp, ...rest } = input;
+  static omitUserInfo(input: any) {
+    const { password, otp, createdAt, updatedAt, ...rest } = input;
     return rest;
   }
 

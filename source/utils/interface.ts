@@ -1,3 +1,9 @@
+import { Request } from 'express';
+
+export interface AuthRequest extends Request {
+  user?: any;
+}
+
 export interface UserI {
   userId: number;
   firstName: string;
@@ -16,9 +22,12 @@ export interface TransactionI {
   transactionType: TransactionType;
   amount: number;
   remark: string;
-  walletBalance: number;
-  senderWallet: number; //walletId
-  receiverWallet: number; //walletId
+
+  receiverBalance: number; // not to be returned
+  senderBalance: number; // not to be returned
+  walletBalance: number; //to be returned
+  sender: number; //walletId
+  receiver: number; //walletId
   createdAt: Date;
   updatedAt: Date;
 }

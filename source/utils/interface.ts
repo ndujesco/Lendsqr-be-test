@@ -1,35 +1,35 @@
 export interface UserI {
-  userId?: string;
+  userId: number;
   firstName: string;
   lastName: string;
   password: string;
+  isVerified: boolean;
+  otp: string;
   email: string;
   phone: string;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface PartialUserI extends Partial<UserI> {}
-
-export interface Transaction {
-  transactionId?: number;
+export interface TransactionI {
+  transactionId: number;
   transactionType: TransactionType;
   amount: number;
-  remark?: string;
+  remark: string;
   walletBalance: number;
-  senderWallet: string; //walletId
-  receiverWallet: string; //walletId
-  createdAt?: string;
-  updatedAt?: string;
+  senderWallet: number; //walletId
+  receiverWallet: number; //walletId
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface Wallet {
-  walletId?: number;
+export interface WalletI {
+  walletId: number;
   balance: number;
   walletNumber: string;
-  user: string; //userId
-  createdAt?: string;
-  updatedAt?: string;
+  owner: number; //userId
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 enum TransactionType {

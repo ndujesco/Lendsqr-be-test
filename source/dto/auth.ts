@@ -1,4 +1,10 @@
-import { IsEmail, IsPhoneNumber, IsString, Length } from 'class-validator';
+import {
+  IsEmail,
+  IsNumber,
+  IsPhoneNumber,
+  IsString,
+  Length,
+} from 'class-validator';
 
 class SignInDto {
   @IsEmail()
@@ -19,4 +25,21 @@ class SignUpDto extends SignInDto {
   phone: string;
 }
 
-export { SignInDto, SignUpDto };
+class VerifyEmailDto {
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  @Length(6)
+  otp: string;
+}
+
+class UpdateEmailDto {
+  @IsEmail()
+  email: string;
+
+  @IsNumber()
+  userId: number;
+}
+
+export { SignInDto, SignUpDto, VerifyEmailDto, UpdateEmailDto };

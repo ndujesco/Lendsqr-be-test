@@ -23,7 +23,7 @@ class ErrorHandler {
         message: err.message,
         success: false,
         errorStack,
-        rawErrors: err.rawErrors ?? [],
+        errors: err.rawErrors ?? [],
       });
     };
   }

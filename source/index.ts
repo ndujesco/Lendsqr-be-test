@@ -1,9 +1,10 @@
-import app from './app';
 import * as dotenv from 'dotenv';
+dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+
+import app from './app';
 import { Application } from 'express';
 import logger from './utils/winston';
 
-dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
 
 class Server {

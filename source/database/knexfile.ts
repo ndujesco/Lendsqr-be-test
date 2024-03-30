@@ -2,11 +2,11 @@ import * as dotenv from 'dotenv';
 
 import type { Knex } from 'knex';
 
-
-//the working directory was changed to .../source/database, hence the relative filepath
+// the working directory was changed to .../source/database, hence the relative filepath.
 dotenv.config({ path: `../../.env.${process.env.NODE_ENV}` });
 
 const { DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_NAME } = process.env;
+
 // Update with your config settings.
 
 const configs: { [key: string]: Knex.Config } = {
@@ -20,7 +20,7 @@ const configs: { [key: string]: Knex.Config } = {
       database: DB_NAME,
     },
     migrations: {
-      directory: './source/migrations',
+      directory: '../../migrations',
     },
   },
 

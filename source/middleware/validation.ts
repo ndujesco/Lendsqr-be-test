@@ -3,11 +3,13 @@ import { validate } from 'class-validator';
 import { BadRequestError } from './error';
 import { ClassConstructor, plainToInstance } from 'class-transformer';
 import logger from '../utils/winston';
-
 export default class RequestValidator {
-  static validate = <T extends object>(classInstance: ClassConstructor<T>) => {
+  static validate = <T extends object>(
+    classInstance: ClassConstructor<T>,
+    location: 'body' | 'params' | 'query'
+  ) => {
     return async (req: Request, res: Response, next: NextFunction) => {
-      const objectClass = plainToInstance(classInstance, req.body);
+      const objectClass = plainToInstance(classInstance, req[location]);
       await validate(objectClass).then((errors) => {
         if (errors.length > 0) {
           let rawErrors: string[] = [];

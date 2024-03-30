@@ -1,4 +1,4 @@
-export interface User {
+export interface UserI {
   userId?: string;
   firstName: string;
   lastName: string;
@@ -8,6 +8,8 @@ export interface User {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export interface PartialUserI extends Partial<UserI> {}
 
 export interface Transaction {
   transactionId?: number;

@@ -40,4 +40,9 @@ export class TransactionController {
 
     return res.status(200).json({ message: 'Transfer successful' });
   }
+
+
+  static async topUp({ body, user }: AuthRequest, res: Response) {
+    
+  }
 }

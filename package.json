@@ -6,7 +6,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node source/index.ts",
     "start:dev": "clear &&  NODE_ENV=development nodemon source/index.ts",
-    "migrate:latest:dev": "NODE_ENV=development knex --knexfile source/database/knexfile.ts migrate:latest"
+    "migrate:latest:dev": "NODE_ENV=development knex --knexfile source/database/knexfile.ts migrate:latest",
+    "migrate:make:dev": "NODE_ENV=development knex --knexfile source/database/knexfile.ts migrate:make"
+
   },
   "author": "Ndujekwu Ugochukwu Peter",
   "license": "MIT",

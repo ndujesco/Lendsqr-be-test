@@ -23,7 +23,7 @@ export class WalletRepository {
 
   static async updateOne(options: {
     where: Partial<WalletI>;
-    update: Partial<any>;
+    update: Partial<WalletI>;
   }): Promise<WalletI> {
     const { where, update } = options;
     return await db('wallet').where(where).update(update);

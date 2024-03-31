@@ -8,7 +8,6 @@ import {
 import { UserRepository } from '../repository/user';
 import { WalletRepository } from '../repository/wallet';
 
-import logger from '../utils/winston';
 import { AuthError, BadRequestError, NotFoundError } from '../middleware/error';
 import { comparePassword, createJWT, hashPassword } from '../utils/auth';
 import { AuthRequest, UserI } from '../utils/interface';

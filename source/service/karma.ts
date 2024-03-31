@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AuthError, NotFoundError } from '../middleware/error';
+import { AuthError } from '../middleware/error';
 
 export class KarmaService {
   static async userIsBlacklisted(identity: string) {

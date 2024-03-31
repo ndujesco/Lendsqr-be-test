@@ -67,11 +67,4 @@ class BadRequestError extends ApiError {
   }
 }
 
-
-class InternalServerError extends ApiError {
-  constructor(public message: string, public errors?: string[]) {
-    super(message, 400, errors);
-  }
-}
-
 export { ErrorHandler, NotFoundError, ApiError, AuthError, BadRequestError };

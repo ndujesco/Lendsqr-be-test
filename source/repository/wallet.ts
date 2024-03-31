@@ -13,8 +13,8 @@ export class WalletRepository {
       .orWhere({ owner: userId2 })) as [WalletI, WalletI];
   }
 
-  static async findBy(walletNumber: string) {
-    return await db('wallet').where({ walletNumber }).first();
+  static async findOneBy(where: Partial<WalletI>): Promise<WalletI> {
+    return await db('wallet').where(where).first();
   }
 
   static async create(walletInfo: Partial<WalletI>) {

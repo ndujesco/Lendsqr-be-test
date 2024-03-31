@@ -123,7 +123,7 @@ export class AuthController {
     });
   }
 
-  static async createWallet(owner: number) {
+  private static async createWallet(owner: number) {
     // create wallet logic
 
     let walletNumber;

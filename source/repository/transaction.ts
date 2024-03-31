@@ -20,11 +20,13 @@ export class TransactionRepository {
     return await db('transaction').where(where).update(update);
   }
 
-  static async topUp(options: {
+  static async verify(options: {
     wallet: WalletI;
-    transactionInfo: Partial<TransactionI>;
+    transaction: { transactionId: number; update: Partial<TransactionI> };
   }) {
-    const { wallet, transactionInfo } = options;
+    const { wallet, transaction } = options;
+
+    const { transactionId, update } = transaction;
     const { owner, balance } = wallet;
 
     try {
@@ -34,7 +36,10 @@ export class TransactionRepository {
           update: { balance },
         });
 
-        await TransactionRepository.create(transactionInfo);
+        await TransactionRepository.updateOne({
+          where: { transactionId },
+          update,
+        });
       });
     } catch (err) {
       throw err; // at this point it is probably an issue with the database itself

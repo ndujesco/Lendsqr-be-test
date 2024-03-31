@@ -19,6 +19,7 @@ export interface UserI {
 
 export interface TransactionI {
   transactionId: number;
+  transactionUUID: string;
   transactionType: TransactionType;
   amount: number;
   remark: string;
@@ -30,6 +31,8 @@ export interface TransactionI {
   receiver: number; //walletId
   createdAt: Date;
   updatedAt: Date;
+
+  isSuccessful: boolean;
 }
 
 export interface WalletI {

@@ -52,6 +52,7 @@ export async function up(knex: Knex): Promise<void> {
       table.float('amount').notNullable();
       table.float('senderBalance').nullable(); // not to be returned
       table.float('receiverBalance').nullable(); // these fields will not be returned to user instead a 'walletBalance' field will be returned which will be either senderBalance or receiverBalance
+      table.boolean('isSuccessful').defaultTo(false).notNullable();
 
       table.string('remark').nullable();
       table.dateTime('createdAt').defaultTo(knex.raw('CURRENT_TIMESTAMP'));
@@ -66,7 +67,7 @@ export async function up(knex: Knex): Promise<void> {
         .references('userId')
         .inTable('user')
         .onDelete('CASCADE')
-        .notNullable();
+        .nullable();
 
       table
         .integer('receiver')
@@ -74,7 +75,7 @@ export async function up(knex: Knex): Promise<void> {
         .references('userId')
         .inTable('user')
         .onDelete('CASCADE')
-        .notNullable();
+        .nullable();
     });
 }
 

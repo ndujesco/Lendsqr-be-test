@@ -1,17 +1,28 @@
-import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, Min } from 'class-validator';
 
 class TransferDto {
   @IsNotEmpty()
   @IsNumber()
   receiverId: number;
 
-  @IsNotEmpty()
   @IsNumber()
+  @Min(100)
   amount: number;
 
   @IsOptional()
   remark: string;
 }
 
+class InitiateTransactionDto {
+  @IsNumber()
+  @Min(100)
+  amount: number;
+}
 
-export { TransferDto };
+class VerifyTransactionDto {
+  @IsNotEmpty()
+  @IsNumber()
+  paymentId: number;
+}
+
+export { TransferDto, InitiateTransactionDto, VerifyTransactionDto };

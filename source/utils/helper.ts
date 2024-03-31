@@ -61,10 +61,13 @@ export class Helper {
     }, {} as Record<TransactionType, TransactionI[]>);
   }
 
-  static removeTransactionFields(transactions: TransactionI[]): TransactionI[] {
+  static removeTransactionFields(
+    transactions: TransactionI[],
+    userId: number
+  ): TransactionI[] {
     return transactions.map((transaction) => {
       const { senderBalance, receiverBalance, sender, ...rest } = transaction;
-      const walletBalance = sender ? senderBalance : receiverBalance;
+      const walletBalance = sender === userId ? senderBalance : receiverBalance;
       return {
         ...rest,
         walletBalance,

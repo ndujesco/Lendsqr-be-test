@@ -3,7 +3,7 @@ import { AuthRequest, TransactionI, TransactionType } from '../utils/interface';
 import { UserRepository } from '../repository/user';
 import { WalletRepository } from '../repository/wallet';
 import { NotFoundError } from '../middleware/error';
-import { UserTransactionsDto } from '../dto/user';
+import { GetUserByDto, UserTransactionsDto } from '../dto/user';
 import { TransactionRepository } from '../repository/transaction';
 import { Helper } from '../utils/helper';
 
@@ -48,7 +48,7 @@ export class UserController {
         transactionType,
       });
     }
-    transactions = Helper.removeTransactionFields(transactions);
+    transactions = Helper.removeTransactionFields(transactions, userId);
     transactions = Helper.groupByTransactionType(transactions);
 
     res.json({
@@ -74,7 +74,7 @@ export class UserController {
         take,
       });
 
-    transactions = Helper.removeTransactionFields(transactions);
+    transactions = Helper.removeTransactionFields(transactions, userId);
 
     res.json({
       message: 'Successful',
@@ -83,8 +83,62 @@ export class UserController {
     });
   }
 
-  static async getUserFromWalletNumber(
+  static async getCommonTransactions(
     { user, query }: AuthRequest,
     res: Response
-  ) {}
+  ) {
+    const { userId: loggedUser } = user;
+    const otherUser = Number(query.userId) || 0;
+
+    const transactions = await TransactionRepository.findCommonTransactions(
+      loggedUser,
+      otherUser
+    );
+
+    res.json({
+      message: 'Successful',
+      success: true,
+      data: { transactions },
+    });
+  }
+
+  static async getUserFromWalletNumber({ query }: AuthRequest, res: Response) {
+    const { walletNumber } = query;
+    const user = await UserRepository.findUserByWalletNumber(
+      String(walletNumber)
+    );
+
+    if (!user) throw new NotFoundError('User not found');
+
+    res.json({
+      message: 'Successful',
+      success: true,
+      data: { user },
+    });
+  }
+
+  static async getUserFromId({ query }: AuthRequest, res: Response) {
+    const userId = Number(query.userId) || 0;
+    const user = await UserRepository.findProfilesBy('userId', userId);
+
+    if (!user) throw new NotFoundError('User not found');
+
+    res.json({
+      message: 'Successful',
+      success: true,
+      data: { user: user[0] },
+    });
+  }
+
+  static async getUserBy({ query }: AuthRequest, res: Response) {
+    const { key, value } = query as unknown as GetUserByDto;
+
+    const users = await UserRepository.findProfilesBy(key, value);
+
+    res.json({
+      message: 'Successful',
+      success: true,
+      data: { users },
+    });
+  }
 }

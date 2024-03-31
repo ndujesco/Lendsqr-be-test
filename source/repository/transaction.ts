@@ -31,6 +31,13 @@ export class TransactionRepository {
       .offset(skip);
   }
 
+  static async findCommonTransactions(user1: number, user2: number) {
+    return await db('transaction')
+      .where({ sender: user1, receiver: user2 })
+      .orWhere({ sender: user2, receiver: user1 })
+      .andWhere({ transactionType: TransactionType.TRANSFER });
+  }
+
   static async create(
     createTransactionInfo: Partial<TransactionI>
   ): Promise<number[]> {

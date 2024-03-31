@@ -45,11 +45,17 @@ export class UserRepository {
       .first();
   }
 
-  static async findUserByWalletNumber(wallletNumber: number) {
+  static async findUserByWalletNumber(walletNumber: string) {
+    return await db('wallet')
+      .select('userId', 'firstName', 'lastName', 'email', 'isVerified', 'phone')
+      .where({ walletNumber, isVerified: true })
+      .leftJoin('user', 'wallet.owner', 'user.userId')
+      .first();
+  }
+
+  static async findProfilesBy(key: string, value: string | number) {
     return await db('user')
       .select('userId', 'firstName', 'lastName', 'email', 'isVerified', 'phone')
-      .where({ wallletNumber, isVerified: true })
-      .leftJoin('wallet', 'user.userId', 'wallet.owner')
-      .first();
+      .where(key, value);
   }
 }

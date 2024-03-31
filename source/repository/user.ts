@@ -27,4 +27,29 @@ export class UserRepository {
     const { where, update } = options;
     return await db('user').where(where).update(update);
   }
+
+  static async findMyProfile(userId: number) {
+    return await db('user')
+      .select(
+        'userId',
+        'firstName',
+        'lastName',
+        'email',
+        'isVerified',
+        'phone',
+        'balance',
+        'walletNumber'
+      )
+      .where({ userId })
+      .leftJoin('wallet', 'user.userId', 'wallet.owner')
+      .first();
+  }
+
+  static async findUserByWalletNumber(wallletNumber: number) {
+    return await db('user')
+      .select('userId', 'firstName', 'lastName', 'email', 'isVerified', 'phone')
+      .where({ wallletNumber, isVerified: true })
+      .leftJoin('wallet', 'user.userId', 'wallet.owner')
+      .first();
+  }
 }

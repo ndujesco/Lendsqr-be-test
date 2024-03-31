@@ -1,4 +1,7 @@
 import { Router } from 'express';
+
+import 'express-async-errors';
+
 import RequestValidator from '../middleware/validation';
 import {
   SignInDto,
@@ -8,8 +11,6 @@ import {
   VerifyPasswordDto,
 } from '../dto/auth';
 import { AuthController } from '../controller/auth';
-
-import 'express-async-errors';
 import { protect } from '../middleware/auth';
 
 const authRouter = Router();

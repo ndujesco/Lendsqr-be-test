@@ -1,3 +1,5 @@
+import { TransactionI, TransactionType } from './interface';
+
 export class Helper {
   private static otpLifeSpan = 1800000; // 30 minutes
 
@@ -46,5 +48,27 @@ export class Helper {
       inputOtp === generatedOtp &&
       Date.now() - lastUpdated.getTime() < this.otpLifeSpan
     );
+  }
+
+  static groupByTransactionType(transactions: TransactionI[]) {
+    return transactions.reduce((result, obj) => {
+      const type = obj.transactionType;
+      if (!result[type]) {
+        result[type] = [];
+      }
+      result[type].push(obj);
+      return result;
+    }, {} as Record<TransactionType, TransactionI[]>);
+  }
+
+  static removeTransactionFields(transactions: TransactionI[]): TransactionI[] {
+    return transactions.map((transaction) => {
+      const { senderBalance, receiverBalance, sender, ...rest } = transaction;
+      const walletBalance = sender ? senderBalance : receiverBalance;
+      return {
+        ...rest,
+        walletBalance,
+      } as TransactionI;
+    });
   }
 }

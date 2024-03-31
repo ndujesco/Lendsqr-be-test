@@ -1,7 +1,36 @@
 import db from '../database/db';
-import { TransactionI, WalletI } from '../utils/interface';
+import { TransactionI, TransactionType, WalletI } from '../utils/interface';
 import { WalletRepository } from './wallet';
 export class TransactionRepository {
+  static async findAllMyTransactions(userId: number): Promise<TransactionI[]> {
+    return await db('transaction')
+      .where({ sender: userId })
+      .orWhere({ receiver: userId });
+  }
+
+  static async findMyTransactionsByType(options: {
+    userId: number;
+    transactionType: TransactionType;
+  }): Promise<TransactionI[]> {
+    const { userId, transactionType } = options;
+    return await db('transaction')
+      .where({ sender: userId, transactionType })
+      .orWhere({ receiver: userId, transactionType });
+  }
+
+  static async findMyTransactionsByPage(options: {
+    userId: number;
+    take: number;
+    skip: number;
+  }): Promise<TransactionI[]> {
+    const { userId, take, skip } = options;
+    return await db('transaction')
+      .where({ sender: userId })
+      .orWhere({ receiver: userId })
+      .limit(take)
+      .offset(skip);
+  }
+
   static async create(
     createTransactionInfo: Partial<TransactionI>
   ): Promise<number[]> {
@@ -12,7 +41,7 @@ export class TransactionRepository {
     return await db('transaction').where(where).first();
   }
 
-  static async updateOne(options: {
+  private static async updateOne(options: {
     where: Partial<TransactionI>;
     update: Partial<TransactionI>;
   }): Promise<TransactionI> {

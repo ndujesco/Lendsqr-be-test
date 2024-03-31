@@ -11,10 +11,11 @@ import { WalletRepository } from '../repository/wallet';
 import logger from '../utils/winston';
 import { AuthError, BadRequestError, NotFoundError } from '../middleware/error';
 import { comparePassword, createJWT, hashPassword } from '../utils/auth';
-import { UserI } from '../utils/interface';
+import { AuthRequest, UserI } from '../utils/interface';
 import { KarmaService } from '../service/karma';
 import { Helper } from '../utils/helper';
 import { EmailService } from '../service/email';
+import db from '../database/db';
 
 export class AuthController {
   static async signUp({ body }: Request, res: Response) {
@@ -37,8 +38,19 @@ export class AuthController {
     const password = await hashPassword(unhashedPasswrd);
     const userInfo: UserI = { ...body, password, otp };
 
-    const [userId] = await UserRepository.create(userInfo);
-    await AuthController.createWallet(userId);
+    /**
+     * We need to make sure that is is impossible, even in principle, for there to be a user without a concomitant wallet.
+     * We can do this by leveraging the transaction feature.
+     */
+    try {
+      db.transaction(async (trx) => {
+        const [userId] = await UserRepository.create(userInfo);
+        await AuthController.createWallet(userId);
+      });
+    } catch (error) {
+      throw error; // probably an issue with the database
+    }
+
     EmailService.sendOtp({ to: email, otp, name: firstName });
 
     res.json({
@@ -119,7 +131,7 @@ export class AuthController {
 
     do {
       walletNumber = Helper.generateWalletAccountNumber();
-      wallet = await WalletRepository.getFromAccountNumber(walletNumber);
+      wallet = await WalletRepository.findByAccountNumber(walletNumber);
     } while (wallet);
 
     WalletRepository.create({ walletNumber, owner });
@@ -143,6 +155,22 @@ export class AuthController {
       message: 'Sign in successful!',
       success: true,
       data: Helper.omitUserInfo({ ...user, accessToken }),
+    });
+  }
+
+  static async verifyPassword({ body, user }: AuthRequest, res: Response) {
+    const { password } = body;
+    const { userId } = user;
+
+    const foundUser = await UserRepository.findOneBy({ userId });
+    if (!foundUser) throw new NotFoundError('Invalid user.');
+
+    const passwordMatches = await comparePassword(password, foundUser.password);
+    if (!passwordMatches) throw new AuthError('Invalid password.');
+
+    res.json({
+      message: 'Correct password.',
+      success: true,
     });
   }
 }

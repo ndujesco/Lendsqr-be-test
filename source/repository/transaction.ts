@@ -1,5 +1,6 @@
 import db from '../database/db';
-import { TransactionI } from '../utils/interface';
+import { TransactionI, WalletI } from '../utils/interface';
+import { WalletRepository } from './wallet';
 export class TransactionRepository {
   static async create(
     createTransactionInfo: Partial<TransactionI>
@@ -17,5 +18,33 @@ export class TransactionRepository {
   }): Promise<TransactionI> {
     const { where, update } = options;
     return await db('transaction').where(where).update(update);
+  }
+
+  static async transfer(options: {
+    wallets: [WalletI, WalletI];
+    transactionInfo: Partial<TransactionI>;
+  }) {
+    const { wallets, transactionInfo } = options;
+    const [
+      { owner: sender, balance: senderBalance },
+      { owner: receiver, balance: receiverBalance },
+    ] = wallets;
+    try {
+      await db.transaction(async (trx) => {
+        await WalletRepository.updateOne({
+          where: { owner: sender },
+          update: { balance: senderBalance },
+        });
+
+        await WalletRepository.updateOne({
+          where: { owner: receiver },
+          update: { balance: receiverBalance },
+        });
+
+        await TransactionRepository.create(transactionInfo);
+      });
+    } catch (err) {
+      throw err; // at this point it is probably an issue with the database itself
+    }
   }
 }

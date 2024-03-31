@@ -42,4 +42,15 @@ class UpdateEmailDto {
   userId: number;
 }
 
-export { SignInDto, SignUpDto, VerifyEmailDto, UpdateEmailDto };
+class VerifyPasswordDto {
+  @Length(5, 20)
+  password: string;
+}
+
+export {
+  SignInDto,
+  SignUpDto,
+  VerifyEmailDto,
+  UpdateEmailDto,
+  VerifyPasswordDto,
+};

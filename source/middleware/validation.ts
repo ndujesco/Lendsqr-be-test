@@ -6,7 +6,7 @@ import logger from '../utils/winston';
 export default class RequestValidator {
   static validate = <T extends object>(
     classInstance: ClassConstructor<T>,
-    location: 'body' | 'params' | 'query'
+    location: 'body' | 'query'
   ) => {
     return async (req: Request, res: Response, next: NextFunction) => {
       const objectClass = plainToInstance(classInstance, req[location]);

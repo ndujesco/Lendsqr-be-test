@@ -5,10 +5,12 @@ import {
   SignUpDto,
   UpdateEmailDto,
   VerifyEmailDto,
+  VerifyPasswordDto,
 } from '../dto/auth';
 import { AuthController } from '../controller/auth';
 
 import 'express-async-errors';
+import { protect } from '../middleware/auth';
 
 const authRouter = Router();
 
@@ -22,6 +24,17 @@ authRouter.post(
   '/signIn',
   RequestValidator.validate(SignInDto, 'body'),
   AuthController.signIn
+);
+
+/**
+ * Verify password for a signed in user.
+ * Important for sensitive transactions.
+ */
+authRouter.post(
+  '/password',
+  protect,
+  RequestValidator.validate(VerifyPasswordDto, 'body'),
+  AuthController.verifyPassword
 );
 
 authRouter.patch(

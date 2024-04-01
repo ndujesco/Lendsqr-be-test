@@ -1,15 +1,20 @@
 import { Response } from 'express';
-import { TransferDto } from '../dto/transaction.dto';
+
+import { TransactionRepository } from '../repository/transaction.repository';
+import { WalletRepository } from '../repository/wallet.repository';
+
+import { PaymentService } from '../service/payment.service';
+
+import { BadRequestError, NotFoundError } from '../middleware/error.middleware';
+
 import {
   AuthRequest,
   TransactionI,
   TransactionType,
   WalletI,
 } from '../util/interface.util';
-import { WalletRepository } from '../repository/wallet.repository';
-import { BadRequestError, NotFoundError } from '../middleware/error.middleware';
-import { TransactionRepository } from '../repository/transaction.repository';
-import { PaymentService } from '../service/payment.service';
+
+import { TransferDto } from '../dto/transaction.dto';
 
 export class TransactionController {
   static async transfer({ body, user }: AuthRequest, res: Response) {

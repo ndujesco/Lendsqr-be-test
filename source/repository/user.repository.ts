@@ -1,4 +1,5 @@
 import db from '../database/db';
+
 import { UserI } from '../util/interface.util';
 
 export class UserRepository {

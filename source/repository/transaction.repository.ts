@@ -1,6 +1,8 @@
 import db from '../database/db';
-import { TransactionI, TransactionType, WalletI } from '../util/interface.util';
+
 import { WalletRepository } from './wallet.repository';
+
+import { TransactionI, TransactionType, WalletI } from '../util/interface.util';
 export class TransactionRepository {
   static async findAllMyTransactions(userId: number): Promise<TransactionI[]> {
     return await db('transaction')

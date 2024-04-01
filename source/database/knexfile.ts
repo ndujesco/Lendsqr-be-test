@@ -1,5 +1,4 @@
 import * as dotenv from 'dotenv';
-
 import type { Knex } from 'knex';
 
 // the working directory was changed to .../source/database, hence the relative filepath.

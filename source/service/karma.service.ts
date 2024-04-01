@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import { AuthError } from '../middleware/error.middleware';
 
 export class KarmaService {

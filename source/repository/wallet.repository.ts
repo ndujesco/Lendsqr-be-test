@@ -1,4 +1,5 @@
 import db from '../database/db';
+
 import { WalletI } from '../util/interface.util';
 
 export class WalletRepository {

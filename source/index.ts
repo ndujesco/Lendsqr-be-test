@@ -1,11 +1,11 @@
 import * as dotenv from 'dotenv';
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
-import app from './app';
 import { Application } from 'express';
+
+import app from './app';
+
 import logger from './util/winston.util';
-
-
 
 class Server {
   private port = process.env.PORT || 3000;

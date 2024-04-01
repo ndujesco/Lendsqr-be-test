@@ -7,13 +7,13 @@ enum Key {
   EMAIL = 'email',
   PHONE = 'phone',
 }
-class UserTransactionsDto {
+export class UserTransactionsDto {
   @IsEnum(TransactionType)
   @IsOptional()
   transactionType: TransactionType;
 }
 
-class GetUserByDto {
+export class GetUserByDto {
   @IsNotEmpty()
   @IsEnum(Key)
   key: Key;
@@ -22,5 +22,3 @@ class GetUserByDto {
   @IsNotEmpty()
   value: string;
 }
-
-export { UserTransactionsDto, GetUserByDto };

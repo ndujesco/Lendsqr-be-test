@@ -6,7 +6,7 @@ import {
   Length,
 } from 'class-validator';
 
-class SignInDto {
+export class SignInDto {
   @IsEmail()
   email: string;
 
@@ -14,7 +14,7 @@ class SignInDto {
   password: string;
 }
 
-class SignUpDto extends SignInDto {
+export class SignUpDto extends SignInDto {
   @IsString()
   firstName: string;
 
@@ -25,7 +25,7 @@ class SignUpDto extends SignInDto {
   phone: string;
 }
 
-class VerifyEmailDto {
+export class VerifyEmailDto {
   @IsEmail()
   email: string;
 
@@ -34,7 +34,7 @@ class VerifyEmailDto {
   otp: string;
 }
 
-class UpdateEmailDto {
+export class UpdateEmailDto {
   @IsEmail()
   email: string;
 
@@ -42,15 +42,7 @@ class UpdateEmailDto {
   userId: number;
 }
 
-class VerifyPasswordDto {
+export class VerifyPasswordDto {
   @Length(5, 20)
   password: string;
 }
-
-export {
-  SignInDto,
-  SignUpDto,
-  VerifyEmailDto,
-  UpdateEmailDto,
-  VerifyPasswordDto,
-};

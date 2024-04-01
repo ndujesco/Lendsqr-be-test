@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-class ApiError extends Error {
+export class ApiError extends Error {
   constructor(
     message: string,
     public statusCode: number,
@@ -11,7 +11,7 @@ class ApiError extends Error {
   }
 }
 
-class ErrorHandler {
+export class ErrorHandler {
   static handle() {
     return (err: ApiError, req: Request, res: Response, next: NextFunction) => {
       const statusCode = err.statusCode || 500;
@@ -49,22 +49,20 @@ class ErrorHandler {
   }
 }
 
-class NotFoundError extends ApiError {
+export class NotFoundError extends ApiError {
   constructor(message: string) {
     super(message, 404);
   }
 }
 
-class AuthError extends ApiError {
+export class AuthError extends ApiError {
   constructor(message: string) {
     super(message, 401);
   }
 }
 
-class BadRequestError extends ApiError {
+export class BadRequestError extends ApiError {
   constructor(public message: string, public errors?: string[]) {
     super(message, 400, errors);
   }
 }
-
-export { ErrorHandler, NotFoundError, ApiError, AuthError, BadRequestError };

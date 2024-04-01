@@ -2,7 +2,7 @@ import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 import { TransactionType } from '../util/interface.util';
 
-enum Key {
+export enum Key {
   FIRST_NAME = 'firstName',
   LAST_NAME = 'lastName',
   EMAIL = 'email',

@@ -29,8 +29,8 @@ const [
   amount,
   balance,
 ] = [
-  '<userId>',
-  '<receiverId>',
+  1,
+  2,
   '<transactionId>',
   '<checkoutUrl>',
   '<remark>',
@@ -47,7 +47,7 @@ describe('TransactionController', () => {
     } as unknown as Response;
   });
 
-  it('should be defined', () => {
+  it('is defined', () => {
     expect(TransactionController).toBeDefined();
   });
 

@@ -50,7 +50,7 @@ const [
   '<hashedPassword>',
   '<lastUpdated>',
   '<accessToken>',
-  '<userId>',
+  1,
 ];
 
 describe('AuthController', () => {
@@ -64,7 +64,7 @@ describe('AuthController', () => {
     } as unknown as Response;
   });
 
-  it('should be defined', () => {
+  it('is defined', () => {
     expect(AuthController).toBeDefined();
   });
 

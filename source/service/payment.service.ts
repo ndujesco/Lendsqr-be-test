@@ -33,7 +33,7 @@ export class PaymentService {
      */
 
     const transactionId = serviceTransactionId;
-    const success = Math.random() * 100 < 95;
+    const success = Math.random() * 100 < 95; // 95% success rate
 
     return {
       transactionId,

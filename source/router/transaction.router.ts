@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { TransactionController } from '../controller/transaction.contoller';
+import { TransactionController } from '../controller/transaction.controller';
 
 import RequestValidator from '../middleware/validation.middleware.';
 import { protect } from '../middleware/auth.middleware';

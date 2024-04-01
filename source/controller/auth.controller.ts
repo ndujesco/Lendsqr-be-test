@@ -1,9 +1,6 @@
 import { Request, Response } from 'express';
 
-import db from '../database/db';
-
 import { UserRepository } from '../repository/user.repository';
-import { WalletRepository } from '../repository/wallet.repository';
 
 import { KarmaService } from '../service/karma.service';
 import { EmailService } from '../service/email.service';
@@ -30,12 +27,14 @@ export class AuthController {
     const {
       email,
       phone,
-      password: unhashedPasswrd,
+      password: unhashedPassword,
       firstName,
     } = body as SignUpDto;
 
     const user = await UserRepository.checkEmailOrPhone({ email, phone }); // check if a user with the email exists
-    if (user) throw new BadRequestError('User already exists!');
+    if (user) {
+      throw new BadRequestError('User already exists!');
+    }
 
     const isBlackListed =
       (await KarmaService.userIsBlacklisted(email)) ||
@@ -43,25 +42,17 @@ export class AuthController {
     if (isBlackListed) throw new AuthError('User is blacklisted');
 
     const otp = Helper.generateRandomOtp();
-    const password = await hashPassword(unhashedPasswrd);
+    const password = await hashPassword(unhashedPassword);
     const userInfo: UserI = { ...body, password, otp };
 
     /**
      * We need to make sure that is is impossible, even in principle, for there to be a user without a concomitant wallet.
      * We can do this by leveraging the transaction feature.
      */
-    try {
-      db.transaction(async (trx) => {
-        const [userId] = await UserRepository.create(userInfo);
-        await AuthController.createWallet(userId);
-      });
-    } catch (error) {
-      throw error; // probably an issue with the database
-    }
-
+    await UserRepository.signUp(userInfo); // this creates a user and wallet
     EmailService.sendOtp({ to: email, otp, name: firstName });
 
-    res.json({
+    return res.json({
       message: 'User created successfully! An otp has been sent to the mail',
       success: true,
     });
@@ -88,11 +79,13 @@ export class AuthController {
     const accessToken = createJWT(user);
 
     user.isVerified = true; // for the response
-    res.json({
+    const data = Helper.omitUserInfo({ ...user, accessToken });
+
+    return res.json({
       message: 'Email verified!',
       success: true,
-      data: Helper.omitUserInfo({ ...user, accessToken }),
-    });
+      data,
+    }); //the essence od the return is to assist with testing
   }
 
   static async updateEmail({ body }: Request, res: Response) {
@@ -124,25 +117,14 @@ export class AuthController {
 
     foundUser.email = email; // for the response
     foundUser.otp = otp; // for the response
-    res.json({
+
+    const data = Helper.omitUserInfo({ ...foundUser, email });
+
+    return res.json({
       message: 'Email updated successfully! An otp has been sent to the mail',
       success: true,
-      data: Helper.omitUserInfo({ ...foundUser, email }),
+      data,
     });
-  }
-
-  private static async createWallet(owner: number) {
-    // create wallet logic
-
-    let walletNumber;
-    let wallet;
-
-    do {
-      walletNumber = Helper.generateWalletAccountNumber();
-      wallet = await WalletRepository.findByAccountNumber(walletNumber);
-    } while (wallet);
-
-    WalletRepository.create({ walletNumber, owner });
   }
 
   static async signIn({ body }: Request, res: Response) {
@@ -153,16 +135,18 @@ export class AuthController {
     if (!user) throw new NotFoundError('Invalid email or password.');
 
     const passwordMatches = await comparePassword(password, user.password);
-    if (!passwordMatches) throw new AuthError('Invalid email or password.');
+    if (!passwordMatches) throw new NotFoundError('Invalid email or password.');
 
     if (user.isVerified) {
       accessToken = createJWT(user);
     }
 
-    res.json({
+    const data = Helper.omitUserInfo({ ...user, accessToken });
+
+    return res.json({
       message: 'Sign in successful!',
       success: true,
-      data: Helper.omitUserInfo({ ...user, accessToken }),
+      data,
     });
   }
 
@@ -176,7 +160,7 @@ export class AuthController {
     const passwordMatches = await comparePassword(password, foundUser.password);
     if (!passwordMatches) throw new AuthError('Invalid password.');
 
-    res.json({
+    return res.json({
       message: 'Correct password.',
       success: true,
     });

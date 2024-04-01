@@ -1,8 +1,19 @@
 import db from '../database/db';
 
 import { UserI } from '../util/interface.util';
+import { WalletRepository } from './wallet.repository';
 
 export class UserRepository {
+  static async signUp(userInfo: Partial<UserI>) {
+    try {
+      db.transaction(async (trx) => {
+        const [userId] = await UserRepository.create(userInfo);
+        WalletRepository.create(userId);
+      });
+    } catch (error) {
+      throw error; // probably an issue with the database
+    }
+  }
   static async create(createUserInfo: Partial<UserI>): Promise<number[]> {
     return await db('user').insert(createUserInfo);
   }

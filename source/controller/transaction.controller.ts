@@ -19,8 +19,8 @@ import { TransferDto } from '../dto/transaction.dto';
 export class TransactionController {
   static async transfer({ body, user }: AuthRequest, res: Response) {
     const { userId: sender } = user;
-
     const { receiverId: receiver, amount, remark } = body as TransferDto;
+
     const [senderWallet, receiverWallet] = (
       await WalletRepository.findForTransfer([sender, receiver])
     ).sort((a, b) => (Number(a.owner === sender) ? -1 : 1)); // make sure the sender wallet is first
@@ -36,13 +36,14 @@ export class TransactionController {
     receiverWallet.balance += amount;
 
     const transactionInfo: Partial<TransactionI> = {
-      transactionType: TransactionType.TRANSFER,
       amount,
       remark,
       receiverBalance: receiverWallet.balance,
       senderBalance: senderWallet.balance,
       receiver,
       sender,
+
+      transactionType: TransactionType.TRANSFER,
       isSuccessful: true,
     };
 
@@ -51,7 +52,7 @@ export class TransactionController {
       transactionInfo,
     });
 
-    res.json({ message: 'Transfer successful', success: true });
+    return res.json({ message: 'Transfer successful', success: true });
   }
 
   static async topUp({ body, user }: AuthRequest, res: Response) {
@@ -76,7 +77,7 @@ export class TransactionController {
       transactionId,
     });
 
-    res.json({
+    return res.json({
       message: 'Transaction Initiated',
       success: true,
       data: { paymentId, checkoutUrl },
@@ -108,7 +109,7 @@ export class TransactionController {
       transactionId,
     });
 
-    res.json({
+    return res.json({
       message: 'Transaction Initiated',
       success: true,
       data: { paymentId, checkoutUrl },
@@ -120,6 +121,7 @@ export class TransactionController {
     const { userId: owner } = user;
 
     const verifiedData = await PaymentService.verifyTransaction(paymentId);
+
     const { success, transactionId } = verifiedData;
     if (!success) throw new BadRequestError('Invalid payment id');
 
@@ -137,23 +139,32 @@ export class TransactionController {
     const { amount, transactionType } = transaction;
 
     if (transactionType === TransactionType.WITHDRAWAL) {
-      await TransactionController.verifyWithdrawal(amount, wallet, transaction);
+      await TransactionController.effectWithDrawalStatus(
+        amount,
+        wallet,
+        transaction
+      );
     } else {
-      await TransactionController.verifyTopUp(amount, wallet, transaction);
+      await TransactionController.effectTopUpStatus(
+        amount,
+        wallet,
+        transaction
+      );
     }
 
-    res.json({
+    return res.json({
       message: 'Transaction completed successfully!',
       success: true,
     });
   }
 
-  private static async verifyWithdrawal(
+  private static async effectWithDrawalStatus(
     amount: number,
     wallet: WalletI,
     transaction: TransactionI
   ) {
     wallet.balance -= amount;
+
     const update = {
       senderBalance: transaction.senderBalance - amount,
       isSuccessful: true,
@@ -168,7 +179,7 @@ export class TransactionController {
     });
   }
 
-  private static async verifyTopUp(
+  private static async effectTopUpStatus(
     amount: number,
     wallet: WalletI,
     transaction: TransactionI

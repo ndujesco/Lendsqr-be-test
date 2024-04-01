@@ -1,4 +1,5 @@
 import db from '../database/db';
+import { Helper } from '../util/helper.util';
 
 import { WalletI } from '../util/interface.util';
 
@@ -18,15 +19,25 @@ export class WalletRepository {
     return await db('wallet').where(where).first();
   }
 
-  static async create(walletInfo: Partial<WalletI>) {
-    return await db('wallet').insert(walletInfo);
-  }
-
   static async updateOne(options: {
     where: Partial<WalletI>;
     update: Partial<WalletI>;
   }): Promise<WalletI> {
     const { where, update } = options;
     return await db('wallet').where(where).update(update);
+  }
+
+  static async create(owner: number) {
+    // create wallet logic
+
+    let walletNumber;
+    let wallet;
+
+    do {
+      walletNumber = Helper.generateWalletAccountNumber();
+      wallet = await WalletRepository.findByAccountNumber(walletNumber);
+    } while (wallet);
+
+    return await db('wallet').insert({ walletNumber, owner });
   }
 }

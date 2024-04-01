@@ -23,7 +23,7 @@ export class UserController {
     if (!foundUser)
       throw new NotFoundError('This user does not exist in the database.');
 
-    res.json({ message: 'Successful', success: true, data: foundUser });
+    return res.json({ message: 'Successful', success: true, data: foundUser });
   }
 
   static async getMyBalance({ user }: AuthRequest, res: Response) {
@@ -32,7 +32,7 @@ export class UserController {
     if (!wallet)
       throw new NotFoundError('This user does not exist in the database.');
 
-    res.json({
+    return res.json({
       message: 'Successful',
       success: true,
       data: { balance: wallet.balance },
@@ -59,7 +59,7 @@ export class UserController {
     transactions = Helper.removeTransactionFields(transactions, userId);
     transactions = Helper.groupByTransactionType(transactions);
 
-    res.json({
+    return res.json({
       message: 'Successful',
       success: true,
       data: { transactions },
@@ -84,7 +84,7 @@ export class UserController {
 
     transactions = Helper.removeTransactionFields(transactions, userId);
 
-    res.json({
+    return res.json({
       message: 'Successful',
       success: true,
       data: { transactions },
@@ -103,7 +103,7 @@ export class UserController {
       otherUser
     );
 
-    res.json({
+    return res.json({
       message: 'Successful',
       success: true,
       data: { transactions },
@@ -118,7 +118,7 @@ export class UserController {
 
     if (!user) throw new NotFoundError('User not found');
 
-    res.json({
+    return res.json({
       message: 'Successful',
       success: true,
       data: { user },
@@ -131,7 +131,7 @@ export class UserController {
 
     if (!user) throw new NotFoundError('User not found');
 
-    res.json({
+    return res.json({
       message: 'Successful',
       success: true,
       data: { user: user[0] },
@@ -143,7 +143,7 @@ export class UserController {
 
     const users = await UserRepository.findProfilesBy(key, value);
 
-    res.json({
+    return res.json({
       message: 'Successful',
       success: true,
       data: { users },

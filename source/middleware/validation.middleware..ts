@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { validate } from 'class-validator';
 import { BadRequestError } from './error.middleware';
 import { ClassConstructor, plainToInstance } from 'class-transformer';
-import logger from '../util/winston.util.ts';
+import logger from '../util/winston.util';
 export default class RequestValidator {
   static validate = <T extends object>(
     classInstance: ClassConstructor<T>,

@@ -1,4 +1,4 @@
-import { TransactionI, TransactionType } from './interface';
+import { TransactionI, TransactionType } from './interface.util';
 
 export class Helper {
   private static otpLifeSpan = 1800000; // 30 minutes

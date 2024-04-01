@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { UserI } from './interface';
+import { UserI } from './interface.util';
 
 const hashPassword = (password: string) => {
   return bcrypt.hash(password, 5);

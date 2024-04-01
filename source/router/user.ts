@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
-import { protect } from '../middleware/auth';
-import { UserController } from '../controller/user';
-import RequestValidator from '../middleware/validation';
-import { GetUserByDto, UserTransactionsDto } from '../dto/user';
+import { protect } from '../middleware/auth.middleware';
+import { UserController } from '../controller/user.controller';
+import RequestValidator from '../middleware/validation.middleware.';
+import { GetUserByDto, UserTransactionsDto } from '../dto/user.dto';
 
 const userRouter = Router();
 

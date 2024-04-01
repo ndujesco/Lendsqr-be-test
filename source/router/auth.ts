@@ -2,16 +2,16 @@ import { Router } from 'express';
 
 import 'express-async-errors';
 
-import RequestValidator from '../middleware/validation';
+import RequestValidator from '../middleware/validation.middleware.';
 import {
   SignInDto,
   SignUpDto,
   UpdateEmailDto,
   VerifyEmailDto,
   VerifyPasswordDto,
-} from '../dto/auth';
-import { AuthController } from '../controller/auth';
-import { protect } from '../middleware/auth';
+} from '../dto/auth.dto';
+import { AuthController } from '../controller/auth.controller';
+import { protect } from '../middleware/auth.middleware';
 
 const authRouter = Router();
 

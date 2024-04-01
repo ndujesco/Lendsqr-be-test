@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import RequestValidator from '../middleware/validation';
+import RequestValidator from '../middleware/validation.middleware.';
 
-import { TransactionController } from '../controller/transaction';
+import { TransactionController } from '../controller/transaction.contoller';
 import {
   InitiateTransactionDto,
   TransferDto,
   VerifyTransactionDto,
-} from '../dto/transaction';
-import { protect } from '../middleware/auth';
+} from '../dto/transaction.dto';
+import { protect } from '../middleware/auth.middleware';
 
 const transactionRouter = Router();
 

@@ -3,7 +3,7 @@ dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
 import app from './app';
 import { Application } from 'express';
-import logger from './utils/winston';
+import logger from './util/winston.util.ts';
 
 
 

@@ -1,5 +1,5 @@
 import db from '../database/db';
-import { WalletI } from '../utils/interface';
+import { WalletI } from '../util/interface.util';
 
 export class WalletRepository {
   static async findByAccountNumber(walletNumber: string) {

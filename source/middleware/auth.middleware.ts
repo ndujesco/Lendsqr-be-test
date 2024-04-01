@@ -1,7 +1,7 @@
 import { Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { AuthError } from './error';
-import { AuthRequest } from '../utils/interface';
+import { AuthError } from './error.middleware';
+import { AuthRequest } from '../util/interface.util';
 
 export const protect = (
   req: AuthRequest,

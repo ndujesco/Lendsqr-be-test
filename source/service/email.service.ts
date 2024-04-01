@@ -1,5 +1,5 @@
 import { Transporter, createTransport } from 'nodemailer';
-import { Helper } from '../utils/helper';
+import { Helper } from '../util/helper.util';
 
 export class EmailService {
   private static transporter: Transporter = createTransport({

@@ -4,16 +4,16 @@ import {
   SignUpDto,
   UpdateEmailDto,
   VerifyEmailDto,
-} from '../dto/auth';
-import { UserRepository } from '../repository/user';
-import { WalletRepository } from '../repository/wallet';
+} from '../dto/auth.dto';
+import { UserRepository } from '../repository/user.repository';
+import { WalletRepository } from '../repository/wallet.repository';
 
-import { AuthError, BadRequestError, NotFoundError } from '../middleware/error';
-import { comparePassword, createJWT, hashPassword } from '../utils/auth';
-import { AuthRequest, UserI } from '../utils/interface';
-import { KarmaService } from '../service/karma';
-import { Helper } from '../utils/helper';
-import { EmailService } from '../service/email';
+import { AuthError, BadRequestError, NotFoundError } from '../middleware/error.middleware';
+import { comparePassword, createJWT, hashPassword } from '../util/auth.util';
+import { AuthRequest, UserI } from '../util/interface.util';
+import { KarmaService } from '../service/karma.service';
+import { Helper } from '../util/helper.util';
+import { EmailService } from '../service/email.service';
 import db from '../database/db';
 
 export class AuthController {

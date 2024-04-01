@@ -1,5 +1,5 @@
 import db from '../database/db';
-import { UserI } from '../utils/interface';
+import { UserI } from '../util/interface.util';
 
 export class UserRepository {
   static async create(createUserInfo: Partial<UserI>): Promise<number[]> {

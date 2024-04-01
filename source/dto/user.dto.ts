@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { TransactionType } from '../utils/interface';
+import { TransactionType } from '../util/interface.util';
 
 enum Key {
   FIRST_NAME = 'firstName',

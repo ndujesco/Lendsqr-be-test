@@ -1,11 +1,11 @@
 import { Response } from 'express';
-import { AuthRequest, TransactionI, TransactionType } from '../utils/interface';
-import { UserRepository } from '../repository/user';
-import { WalletRepository } from '../repository/wallet';
-import { NotFoundError } from '../middleware/error';
-import { GetUserByDto, UserTransactionsDto } from '../dto/user';
-import { TransactionRepository } from '../repository/transaction';
-import { Helper } from '../utils/helper';
+import { AuthRequest, TransactionI, TransactionType } from '../util/interface.util';
+import { UserRepository } from '../repository/user.repository';
+import { WalletRepository } from '../repository/wallet.repository';
+import { NotFoundError } from '../middleware/error.middleware';
+import { GetUserByDto, UserTransactionsDto } from '../dto/user.dto';
+import { TransactionRepository } from '../repository/transaction.repository';
+import { Helper } from '../util/helper.util';
 
 export class UserController {
   static async getMyProfile({ user }: AuthRequest, res: Response) {

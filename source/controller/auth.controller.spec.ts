@@ -29,6 +29,8 @@ jest.mock('../service/email.service');
 jest.mock('../util/auth.util');
 jest.mock('../util/helper.util');
 
+const mock = (input: any) => input as jest.Mock;
+
 const [
   firstName,
   lastName,
@@ -57,7 +59,7 @@ describe('AuthController', () => {
   let response: Response;
 
   beforeEach(() => {
-    (Helper.generateRandomOtp as jest.Mock).mockClear();
+    mock(Helper.generateRandomOtp).mockClear();
 
     response = {
       json: jest.fn((input): void => input.data), // response.json() returns the data
@@ -84,10 +86,10 @@ describe('AuthController', () => {
     it('creates a user their wallet in the database if successful', async () => {
       const { body } = request;
       const { email, phone, password, firstName } = body;
-      (UserRepository.checkEmailOrPhone as jest.Mock).mockResolvedValue(false);
-      (KarmaService.userIsBlacklisted as jest.Mock).mockResolvedValue(false);
-      (Helper.generateRandomOtp as jest.Mock).mockReturnValue(otp);
-      (hashPassword as jest.Mock).mockResolvedValue(hashedPassword);
+      mock(UserRepository.checkEmailOrPhone).mockResolvedValue(false);
+      mock(KarmaService.userIsBlacklisted).mockResolvedValue(false);
+      mock(Helper.generateRandomOtp).mockReturnValue(otp);
+      mock(hashPassword).mockResolvedValue(hashedPassword);
 
       const data = await signUp();
 
@@ -117,14 +119,14 @@ describe('AuthController', () => {
     });
 
     it('throws a BadRequest Error is user already exists', async () => {
-      (UserRepository.checkEmailOrPhone as jest.Mock).mockResolvedValue(true);
+      mock(UserRepository.checkEmailOrPhone).mockResolvedValue(true);
 
       expect(signUp()).rejects.toThrow(BadRequestError);
     });
 
     it('throws AuthError if user is blacklisted', async () => {
-      (UserRepository.checkEmailOrPhone as jest.Mock).mockResolvedValue(false);
-      (KarmaService.userIsBlacklisted as jest.Mock).mockResolvedValue(true);
+      mock(UserRepository.checkEmailOrPhone).mockResolvedValue(false);
+      mock(KarmaService.userIsBlacklisted).mockResolvedValue(true);
 
       expect(signUp()).rejects.toThrow(AuthError);
     });
@@ -142,16 +144,12 @@ describe('AuthController', () => {
         updatedAt: lastUpdated,
       };
 
-      (UserRepository.findOneBy as jest.Mock).mockResolvedValue(
-        findOneByResult
-      );
+      mock(UserRepository.findOneBy).mockResolvedValue(findOneByResult);
 
-      (Helper.isValidOtp as jest.Mock).mockReturnValue(true);
-      (createJWT as jest.Mock).mockReturnValue(accessToken);
+      mock(Helper.isValidOtp).mockReturnValue(true);
+      mock(createJWT).mockReturnValue(accessToken);
 
-      (Helper.omitUserInfo as jest.Mock).mockReturnValue(
-        '<omitUserInfoResult>'
-      );
+      mock(Helper.omitUserInfo).mockReturnValue('<omitUserInfoResult>');
 
       const data = await verifyEmail();
 
@@ -176,14 +174,14 @@ describe('AuthController', () => {
     });
 
     it('throws NotFoundError if user is not found', async () => {
-      (UserRepository.findOneBy as jest.Mock).mockResolvedValue(false);
+      mock(UserRepository.findOneBy).mockResolvedValue(false);
 
       expect(verifyEmail()).rejects.toThrow(NotFoundError);
     });
 
     it('throws AuthError if otp is invalid', async () => {
-      (UserRepository.findOneBy as jest.Mock).mockResolvedValue(true);
-      (Helper.isValidOtp as jest.Mock).mockReturnValue(false);
+      mock(UserRepository.findOneBy).mockResolvedValue(true);
+      mock(Helper.isValidOtp).mockReturnValue(false);
 
       expect(verifyEmail()).rejects.toThrow(AuthError);
     });
@@ -199,13 +197,11 @@ describe('AuthController', () => {
       const { body } = request;
       const { email } = body;
 
-      (UserRepository.checkEmailOrId as jest.Mock).mockResolvedValue([
+      mock(UserRepository.checkEmailOrId).mockResolvedValue([
         { userId, firstName, otp, email },
       ]);
-      (Helper.generateRandomOtp as jest.Mock).mockReturnValue(otp);
-      (Helper.omitUserInfo as jest.Mock).mockReturnValue(
-        '<omitUserInfoResult>'
-      );
+      mock(Helper.generateRandomOtp).mockReturnValue(otp);
+      mock(Helper.omitUserInfo).mockReturnValue('<omitUserInfoResult>');
 
       const data = await updateEmail();
 
@@ -233,7 +229,7 @@ describe('AuthController', () => {
     });
 
     it('throws NotFoundError if user is not found', async () => {
-      (UserRepository.checkEmailOrId as jest.Mock).mockResolvedValue([
+      mock(UserRepository.checkEmailOrId).mockResolvedValue([
         { userId: '<notUserId>', firstName, otp, email },
       ]);
 
@@ -241,7 +237,7 @@ describe('AuthController', () => {
     });
 
     it('throws AuthError if email is in use by another user', async () => {
-      (UserRepository.checkEmailOrId as jest.Mock).mockResolvedValue([
+      mock(UserRepository.checkEmailOrId).mockResolvedValue([
         { userId: '<notUserId>', firstName, otp, email },
         { userId, firstName, otp, email },
       ]);
@@ -261,14 +257,10 @@ describe('AuthController', () => {
         isVerified: true,
       };
 
-      (UserRepository.findOneBy as jest.Mock).mockResolvedValue(
-        findOneByResult
-      );
-      (comparePassword as jest.Mock).mockResolvedValue(true);
-      (createJWT as jest.Mock).mockReturnValue(accessToken);
-      (Helper.omitUserInfo as jest.Mock).mockReturnValue(
-        '<omitUserInfoResult>'
-      );
+      mock(UserRepository.findOneBy).mockResolvedValue(findOneByResult);
+      mock(comparePassword).mockResolvedValue(true);
+      mock(createJWT).mockReturnValue(accessToken);
+      mock(Helper.omitUserInfo).mockReturnValue('<omitUserInfoResult>');
 
       const data = await signIn();
 
@@ -289,9 +281,7 @@ describe('AuthController', () => {
         password,
         isVerified: false,
       };
-      (UserRepository.findOneBy as jest.Mock).mockResolvedValue(
-        findOneByResult
-      );
+      mock(UserRepository.findOneBy).mockResolvedValue(findOneByResult);
 
       await signIn();
 
@@ -302,16 +292,16 @@ describe('AuthController', () => {
     });
 
     it('throws NotFoundError if user is not found', async () => {
-      (UserRepository.findOneBy as jest.Mock).mockResolvedValue(false);
+      mock(UserRepository.findOneBy).mockResolvedValue(false);
 
       expect(signIn()).rejects.toThrow(NotFoundError);
     });
 
     it('throws NotFoundError if password is invalid', async () => {
-      (UserRepository.findOneBy as jest.Mock).mockResolvedValue({
+      mock(UserRepository.findOneBy).mockResolvedValue({
         password: '<wrongPassword>',
       });
-      (comparePassword as jest.Mock).mockResolvedValue(false);
+      mock(comparePassword).mockResolvedValue(false);
 
       expect(signIn()).rejects.toThrow(NotFoundError);
     });
@@ -324,8 +314,8 @@ describe('AuthController', () => {
       await AuthController.verifyPassword(request, response);
 
     it("verifies the user's password", async () => {
-      (UserRepository.findOneBy as jest.Mock).mockResolvedValue({ password });
-      (comparePassword as jest.Mock).mockResolvedValue(true);
+      mock(UserRepository.findOneBy).mockResolvedValue({ password });
+      mock(comparePassword).mockResolvedValue(true);
 
       const data = await verifyPassword();
 
@@ -337,14 +327,14 @@ describe('AuthController', () => {
     });
 
     it('throws NotFoundError if user is not found', async () => {
-      (UserRepository.findOneBy as jest.Mock).mockResolvedValue(false);
+      mock(UserRepository.findOneBy).mockResolvedValue(false);
 
       expect(verifyPassword()).rejects.toThrow(NotFoundError);
     });
 
     it('throws AuthError if password is invalid', async () => {
-      (UserRepository.findOneBy as jest.Mock).mockResolvedValue(true);
-      (comparePassword as jest.Mock).mockResolvedValue(false);
+      mock(UserRepository.findOneBy).mockResolvedValue(true);
+      mock(comparePassword).mockResolvedValue(false);
 
       expect(verifyPassword()).rejects.toThrow(AuthError);
     });

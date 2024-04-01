@@ -22,6 +22,8 @@ jest.mock('../repository/transaction.repository');
 
 jest.mock('../util/helper.util');
 
+const mock = (input: any) => input as jest.Mock;
+
 process.env = {
   PER_PAGE: '10',
 };
@@ -57,9 +59,7 @@ describe('UserController', () => {
       await UserController.getMyProfile(request, response);
 
     it("returns the looged in user's profile", async () => {
-      (UserRepository.findMyProfile as jest.Mock).mockResolvedValueOnce(
-        '<foundUser>'
-      );
+      mock(UserRepository.findMyProfile).mockResolvedValueOnce('<foundUser>');
 
       const data = await getMyProfile();
 
@@ -72,7 +72,7 @@ describe('UserController', () => {
     });
 
     it('throws NotFoundError if user does not exist', async () => {
-      (UserRepository.findMyProfile as jest.Mock).mockResolvedValueOnce(false);
+      mock(UserRepository.findMyProfile).mockResolvedValueOnce(false);
 
       expect(getMyProfile()).rejects.toThrow(NotFoundError);
     });
@@ -85,9 +85,7 @@ describe('UserController', () => {
       await UserController.getMyBalance(request, response);
 
     it("returns the logged in user's balance", async () => {
-      (WalletRepository.findOneBy as jest.Mock).mockResolvedValueOnce({
-        balance,
-      });
+      mock(WalletRepository.findOneBy).mockResolvedValueOnce({ balance });
 
       const data = await getMyBalance();
 
@@ -100,7 +98,7 @@ describe('UserController', () => {
     });
 
     it('throws NotFoundError if user does not exist', async () => {
-      (UserRepository.findMyProfile as jest.Mock).mockResolvedValueOnce(false);
+      mock(UserRepository.findMyProfile).mockResolvedValueOnce(false);
 
       expect(getMyBalance()).rejects.toThrow(NotFoundError);
     });
@@ -116,14 +114,14 @@ describe('UserController', () => {
       await UserController.getTransactionsByType(request, response);
 
     it("returns the user's transactions according to the type specified, returns all if none is specified", async () => {
-      (
-        TransactionRepository.findMyTransactionsByType as jest.Mock
+      mock(
+        TransactionRepository.findMyTransactionsByType
       ).mockResolvedValueOnce('<transactionsByType>');
 
-      (Helper.removeTransactionFields as jest.Mock).mockReturnValueOnce(
+      mock(Helper.removeTransactionFields).mockReturnValueOnce(
         '<removedFields>'
       );
-      (Helper.groupByTransactionType as jest.Mock).mockReturnValueOnce(
+      mock(Helper.groupByTransactionType).mockReturnValueOnce(
         '<groupedByType>'
       );
 
@@ -160,11 +158,11 @@ describe('UserController', () => {
       await UserController.getTransactions(request, response);
 
     it("returns the user's transactions according to the page specified, returns first page if none is specified", async () => {
-      (
-        TransactionRepository.findMyTransactionsByPage as jest.Mock
+      mock(
+        TransactionRepository.findMyTransactionsByPage
       ).mockResolvedValueOnce('<transactionsByPage>');
 
-      (Helper.removeTransactionFields as jest.Mock).mockReturnValueOnce(
+      mock(Helper.removeTransactionFields).mockReturnValueOnce(
         '<removedFields>'
       );
 
@@ -198,9 +196,9 @@ describe('UserController', () => {
       await UserController.getCommonTransactions(request, response);
 
     it("returns the logged in user's common transaction with the other specified user", async () => {
-      (
-        TransactionRepository.findCommonTransactions as jest.Mock
-      ).mockResolvedValueOnce('<commonTransactions>');
+      mock(TransactionRepository.findCommonTransactions).mockResolvedValueOnce(
+        '<commonTransactions>'
+      );
 
       const data = await getCommonTransactions();
 
@@ -220,9 +218,9 @@ describe('UserController', () => {
       await UserController.getUserFromWalletNumber(request, response);
 
     it("returns a user's profile that matches wallet number", async () => {
-      (
-        UserRepository.findUserByWalletNumber as jest.Mock
-      ).mockResolvedValueOnce('<foundUser>');
+      mock(UserRepository.findUserByWalletNumber).mockResolvedValueOnce(
+        '<foundUser>'
+      );
 
       const data = await getUserFromWalletNumber();
 
@@ -235,9 +233,7 @@ describe('UserController', () => {
     });
 
     it('throws NotFoundError if wallet number does not exist', async () => {
-      (
-        UserRepository.findUserByWalletNumber as jest.Mock
-      ).mockResolvedValueOnce(false);
+      mock(UserRepository.findUserByWalletNumber).mockResolvedValueOnce(false);
 
       expect(getUserFromWalletNumber()).rejects.toThrow(NotFoundError);
     });
@@ -252,7 +248,7 @@ describe('UserController', () => {
       await UserController.getUserFromId(request, response);
 
     it("returns a user's profile that matches id", async () => {
-      (UserRepository.findProfilesBy as jest.Mock).mockResolvedValueOnce([
+      mock(UserRepository.findProfilesBy).mockResolvedValueOnce([
         '<foundUser>',
       ]);
 
@@ -268,7 +264,7 @@ describe('UserController', () => {
     });
 
     it('throws NotFoundError if wallet number does not exist', async () => {
-      (UserRepository.findProfilesBy as jest.Mock).mockResolvedValueOnce(false);
+      mock(UserRepository.findProfilesBy).mockResolvedValueOnce(false);
 
       expect(getUserFromId()).rejects.toThrow(NotFoundError);
     });
@@ -283,9 +279,7 @@ describe('UserController', () => {
       await UserController.getUserBy(request, response);
 
     it('returns users that match the key-value pair provided', async () => {
-      (UserRepository.findProfilesBy as jest.Mock).mockResolvedValueOnce(
-        '<foundUsers>'
-      );
+      mock(UserRepository.findProfilesBy).mockResolvedValueOnce('<foundUsers>');
 
       const data = await getUserBy();
 

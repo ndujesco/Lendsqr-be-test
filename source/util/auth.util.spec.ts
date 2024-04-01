@@ -10,7 +10,7 @@ process.env = {
   JWT_EXPIRATION_TIME: '2m',
 };
 
-describe('returns a valid access token', () => {
+describe('createJWT', () => {
   it('should return the payload after decoding the token', () => {
     const payload = { userId, email: '<email>' } as UserI;
     const token = createJWT(payload);

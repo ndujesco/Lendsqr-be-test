@@ -20,6 +20,8 @@ jest.mock('../repository/wallet.repository');
 
 jest.mock('../service/payment.service');
 
+const mock = (input: any) => input as jest.Mock;
+
 const [
   userId,
   receiverId,
@@ -66,10 +68,8 @@ describe('TransactionController', () => {
         { balance, owner: receiverId },
       ];
 
-      (WalletRepository.findForTransfer as jest.Mock).mockResolvedValue(
-        wallets
-      );
-      (TransactionRepository.transfer as jest.Mock).mockResolvedValue(true);
+      mock(WalletRepository.findForTransfer).mockResolvedValue(wallets);
+      mock(TransactionRepository.transfer).mockResolvedValue(true);
 
       const data = await transfer();
 
@@ -96,7 +96,7 @@ describe('TransactionController', () => {
     });
 
     it('throws NotFoundError if the two separate valid ids is not provided', async () => {
-      (WalletRepository.findForTransfer as jest.Mock).mockResolvedValue([
+      mock(WalletRepository.findForTransfer).mockResolvedValue([
         { balance, owner: userId },
       ]);
 
@@ -104,7 +104,7 @@ describe('TransactionController', () => {
     });
 
     it('throws BadRequestError if balance is insufficient', async () => {
-      (WalletRepository.findForTransfer as jest.Mock).mockResolvedValue([
+      mock(WalletRepository.findForTransfer).mockResolvedValue([
         { balance: 0, owner: userId },
         { balance, owner: receiverId },
       ]);
@@ -123,13 +123,9 @@ describe('TransactionController', () => {
       await TransactionController.topUp(request, response);
 
     it('initiates the topUp transaction', async () => {
-      (WalletRepository.findOneBy as jest.Mock).mockResolvedValue({ balance });
-      (TransactionRepository.create as jest.Mock).mockResolvedValue([
-        transactionId,
-      ]);
-      (PaymentService.initializeTopUp as jest.Mock).mockResolvedValue(
-        checkoutUrl
-      );
+      mock(WalletRepository.findOneBy).mockResolvedValue({ balance });
+      mock(TransactionRepository.create).mockResolvedValue([transactionId]);
+      mock(PaymentService.initializeTopUp).mockResolvedValue(checkoutUrl);
 
       const data = await topUp();
 
@@ -152,7 +148,7 @@ describe('TransactionController', () => {
     });
 
     it('throws NotFoundError if user is not found', async () => {
-      (WalletRepository.findOneBy as jest.Mock).mockResolvedValue(false);
+      mock(WalletRepository.findOneBy).mockResolvedValue(false);
 
       expect(topUp()).rejects.toThrow(NotFoundError);
     });
@@ -168,13 +164,9 @@ describe('TransactionController', () => {
       await TransactionController.withdraw(request, response);
 
     it('intitiates the withdrawal transaction', async () => {
-      (WalletRepository.findOneBy as jest.Mock).mockResolvedValue({ balance });
-      (TransactionRepository.create as jest.Mock).mockResolvedValue([
-        transactionId,
-      ]);
-      (PaymentService.initializeWithdrawal as jest.Mock).mockResolvedValue(
-        checkoutUrl
-      );
+      mock(WalletRepository.findOneBy).mockResolvedValue({ balance });
+      mock(TransactionRepository.create).mockResolvedValue([transactionId]);
+      mock(PaymentService.initializeWithdrawal).mockResolvedValue(checkoutUrl);
 
       const data = await withdraw();
 
@@ -197,15 +189,13 @@ describe('TransactionController', () => {
     });
 
     it('throws NotFoundError if user is not found', async () => {
-      (WalletRepository.findOneBy as jest.Mock).mockResolvedValue(false);
+      mock(WalletRepository.findOneBy).mockResolvedValue(false);
 
       expect(withdraw()).rejects.toThrow(NotFoundError);
     });
 
     it('throws BadRequestError if balance is insufficient', async () => {
-      (WalletRepository.findOneBy as jest.Mock).mockResolvedValue({
-        balance: 0,
-      });
+      mock(WalletRepository.findOneBy).mockResolvedValue({ balance: 0 });
 
       expect(withdraw()).rejects.toThrow(BadRequestError);
     });
@@ -224,11 +214,11 @@ describe('TransactionController', () => {
       const { paymentId } = request.body;
       const wallet = { balance };
 
-      (PaymentService.verifyTransaction as jest.Mock).mockResolvedValue({
+      mock(PaymentService.verifyTransaction).mockResolvedValue({
         success: true,
         transactionId,
       });
-      (TransactionRepository.findOneBy as jest.Mock).mockResolvedValue({
+      mock(TransactionRepository.findOneBy).mockResolvedValue({
         transactionId,
         isSuccessful: false,
         senderBalance: balance, // same as before; hasn't been verified yet
@@ -236,8 +226,8 @@ describe('TransactionController', () => {
         transactionType: TransactionType.WITHDRAWAL,
       });
 
-      (WalletRepository.findOneBy as jest.Mock).mockResolvedValue(wallet);
-      (TransactionRepository.verify as jest.Mock).mockResolvedValue(true);
+      mock(WalletRepository.findOneBy).mockResolvedValue(wallet);
+      mock(TransactionRepository.verify).mockResolvedValue(true);
 
       const data = await verify();
 
@@ -263,7 +253,7 @@ describe('TransactionController', () => {
     });
 
     it('throws BadRequestError if payment id is invalid', async () => {
-      (PaymentService.verifyTransaction as jest.Mock).mockResolvedValue({
+      mock(PaymentService.verifyTransaction).mockResolvedValue({
         success: false,
         transactionId,
       });
@@ -271,22 +261,22 @@ describe('TransactionController', () => {
     });
 
     it('throws NotFoundError if transaction is not found', async () => {
-      (PaymentService.verifyTransaction as jest.Mock).mockResolvedValue({
+      mock(PaymentService.verifyTransaction).mockResolvedValue({
         success: true,
         transactionId,
       });
-      (TransactionRepository.findOneBy as jest.Mock).mockResolvedValue(false);
+      mock(TransactionRepository.findOneBy).mockResolvedValue(false);
 
       expect(verify()).rejects.toThrow(NotFoundError);
     });
 
     it('throws BadRequestError if transaction is already verified', async () => {
-      (PaymentService.verifyTransaction as jest.Mock).mockResolvedValue({
+      mock(PaymentService.verifyTransaction).mockResolvedValue({
         success: false,
         transactionId,
       });
 
-      (TransactionRepository.findOneBy as jest.Mock).mockResolvedValue({
+      mock(TransactionRepository.findOneBy).mockResolvedValue({
         transactionId,
         isSuccessful: true, // transaction is already verified
         senderBalance: balance,

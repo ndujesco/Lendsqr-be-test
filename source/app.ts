@@ -1,9 +1,9 @@
 import express from 'express';
 import { Application } from 'express';
-import authRouter from './router/auth';
+import authRouter from './router/auth.router';
 import { ErrorHandler } from './middleware/error.middleware';
-import transactionRouter from './router/transaction';
-import userRouter from './router/user';
+import transactionRouter from './router/transaction.router';
+import userRouter from './router/user.router';
 
 const app: Application = express();
 

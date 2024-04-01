@@ -1,20 +1,29 @@
 import { Request, Response } from 'express';
+
+import db from '../database/db';
+
+import { UserRepository } from '../repository/user.repository';
+import { WalletRepository } from '../repository/wallet.repository';
+
+import { KarmaService } from '../service/karma.service';
+import { EmailService } from '../service/email.service';
+
+import {
+  AuthError,
+  BadRequestError,
+  NotFoundError,
+} from '../middleware/error.middleware';
+
+import { comparePassword, createJWT, hashPassword } from '../util/auth.util';
+import { AuthRequest, UserI } from '../util/interface.util';
+import { Helper } from '../util/helper.util';
+
 import {
   SignInDto,
   SignUpDto,
   UpdateEmailDto,
   VerifyEmailDto,
 } from '../dto/auth.dto';
-import { UserRepository } from '../repository/user.repository';
-import { WalletRepository } from '../repository/wallet.repository';
-
-import { AuthError, BadRequestError, NotFoundError } from '../middleware/error.middleware';
-import { comparePassword, createJWT, hashPassword } from '../util/auth.util';
-import { AuthRequest, UserI } from '../util/interface.util';
-import { KarmaService } from '../service/karma.service';
-import { Helper } from '../util/helper.util';
-import { EmailService } from '../service/email.service';
-import db from '../database/db';
 
 export class AuthController {
   static async signUp({ body }: Request, res: Response) {

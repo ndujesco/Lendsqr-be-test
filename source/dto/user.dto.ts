@@ -3,15 +3,15 @@ import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { TransactionType } from '../util/interface.util';
 
 export enum Key {
-  FIRST_NAME = 'firstName',
-  LAST_NAME = 'lastName',
+  FIRST_NAME = 'first_name',
+  LAST_NAME = 'last_name',
   EMAIL = 'email',
   PHONE = 'phone',
 }
 export class UserTransactionsDto {
   @IsEnum(TransactionType)
   @IsOptional()
-  transactionType: TransactionType;
+  transaction_type: TransactionType;
 }
 
 export class GetUserByDto {

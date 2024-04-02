@@ -18,8 +18,8 @@ import { TransferDto } from '../dto/transaction.dto';
 
 export class TransactionController {
   static async transfer({ body, user }: AuthRequest, res: Response) {
-    const { userId: sender } = user;
-    const { receiverId: receiver, amount, remark } = body as TransferDto;
+    const { user_id: sender } = user;
+    const { receiver_id: receiver, amount, remark } = body as TransferDto;
 
     const [senderWallet, receiverWallet] = (
       await WalletRepository.findForTransfer([sender, receiver])
@@ -38,13 +38,13 @@ export class TransactionController {
     const transactionInfo: Partial<TransactionI> = {
       amount,
       remark,
-      receiverBalance: receiverWallet.balance,
-      senderBalance: senderWallet.balance,
+      receiver_balance: receiverWallet.balance,
+      sender_balance: senderWallet.balance,
       receiver,
       sender,
 
-      transactionType: TransactionType.TRANSFER,
-      isSuccessful: true,
+      transaction_type: TransactionType.TRANSFER,
+      is_successful: true,
     };
 
     await TransactionRepository.transfer({
@@ -57,24 +57,24 @@ export class TransactionController {
 
   static async topUp({ body, user }: AuthRequest, res: Response) {
     const { amount } = body;
-    const { userId: owner } = user;
+    const { user_id: owner } = user;
 
     const wallet = await WalletRepository.findOneBy({ owner });
     if (!wallet) throw new NotFoundError('User not found.');
 
     const transactionInfo: Partial<TransactionI> = {
-      transactionType: TransactionType.TOP_UP,
+      transaction_type: TransactionType.TOP_UP,
       amount,
-      receiverBalance: wallet.balance,
+      receiver_balance: wallet.balance,
       receiver: owner,
     };
 
-    const [transactionId] = await TransactionRepository.create(transactionInfo);
-    const paymentId = transactionId;
+    const [transaction_id] = await TransactionRepository.create(transactionInfo);
+    const paymentId = transaction_id;
 
     const checkoutUrl = await PaymentService.initializeTopUp({
       amount,
-      transactionId,
+      transaction_id,
     });
 
     return res.json({
@@ -86,7 +86,7 @@ export class TransactionController {
 
   static async withdraw({ body, user }: AuthRequest, res: Response) {
     const { amount } = body;
-    const { userId: owner } = user;
+    const { user_id: owner } = user;
 
     const wallet = await WalletRepository.findOneBy({ owner });
     if (!wallet) throw new NotFoundError('User not found.');
@@ -95,18 +95,18 @@ export class TransactionController {
       throw new BadRequestError('Insufficient Balance');
 
     const transactionInfo: Partial<TransactionI> = {
-      transactionType: TransactionType.WITHDRAWAL,
+      transaction_type: TransactionType.WITHDRAWAL,
       amount,
-      senderBalance: wallet.balance,
+      sender_balance: wallet.balance,
       sender: owner,
     };
 
-    const [transactionId] = await TransactionRepository.create(transactionInfo);
-    const paymentId = transactionId;
+    const [transaction_id] = await TransactionRepository.create(transactionInfo);
+    const paymentId = transaction_id;
 
     const checkoutUrl = await PaymentService.initializeWithdrawal({
       amount,
-      transactionId,
+      transaction_id,
     });
 
     return res.json({
@@ -118,27 +118,27 @@ export class TransactionController {
 
   static async verify({ body, user }: AuthRequest, res: Response) {
     const { paymentId } = body;
-    const { userId: owner } = user;
+    const { user_id: owner } = user;
 
     const verifiedData = await PaymentService.verifyTransaction(paymentId);
 
-    const { success, transactionId } = verifiedData;
+    const { success, transaction_id } = verifiedData;
     if (!success) throw new BadRequestError('Invalid payment id');
 
     const transaction = await TransactionRepository.findOneBy({
-      transactionId,
+      transaction_id,
     });
     if (!transaction) throw new NotFoundError('Transaction not found.');
 
-    if (transaction.isSuccessful)
+    if (transaction.is_successful)
       throw new BadRequestError('This transaction is already verified');
 
     const wallet = await WalletRepository.findOneBy({ owner });
     if (!wallet) throw new NotFoundError('User not found.');
 
-    const { amount, transactionType } = transaction;
+    const { amount, transaction_type } = transaction;
 
-    if (transactionType === TransactionType.WITHDRAWAL) {
+    if (transaction_type === TransactionType.WITHDRAWAL) {
       await TransactionController.effectWithDrawalStatus(
         amount,
         wallet,
@@ -166,14 +166,14 @@ export class TransactionController {
     wallet.balance -= amount;
 
     const update = {
-      senderBalance: transaction.senderBalance - amount,
-      isSuccessful: true,
+      sender_balance: transaction.sender_balance - amount,
+      is_successful: true,
     };
 
     await TransactionRepository.verify({
       wallet,
       transaction: {
-        transactionId: transaction.transactionId,
+        transaction_id: transaction.transaction_id,
         update,
       },
     });
@@ -186,14 +186,14 @@ export class TransactionController {
   ) {
     wallet.balance += amount;
     const update = {
-      receiverBalance: transaction.receiverBalance + amount,
-      isSuccessful: true,
+      receiver_balance: transaction.receiver_balance + amount,
+      is_successful: true,
     };
 
     await TransactionRepository.verify({
       wallet,
       transaction: {
-        transactionId: transaction.transactionId,
+        transaction_id: transaction.transaction_id,
         update,
       },
     });

@@ -23,9 +23,9 @@ jest.mock('../service/payment.service');
 const mock = (input: any) => input as jest.Mock;
 
 const [
-  userId,
-  receiverId,
-  transactionId,
+  user_id,
+  receiver_id,
+  transaction_id,
   checkoutUrl,
   remark,
   amount,
@@ -33,7 +33,7 @@ const [
 ] = [
   1,
   2,
-  '<transactionId>',
+  '<transaction_id>',
   '<checkoutUrl>',
   '<remark>',
   10,
@@ -55,8 +55,8 @@ describe('TransactionController', () => {
 
   describe('transfer', () => {
     const request = {
-      body: { receiverId, amount, remark },
-      user: { userId },
+      body: { receiver_id, amount, remark },
+      user: { user_id },
     } as AuthRequest;
 
     const transfer = async () =>
@@ -64,8 +64,8 @@ describe('TransactionController', () => {
 
     it('transfers amount successfully', async () => {
       const wallets = [
-        { balance, owner: userId },
-        { balance, owner: receiverId },
+        { balance, owner: user_id },
+        { balance, owner: receiver_id },
       ];
 
       mock(WalletRepository.findForTransfer).mockResolvedValue(wallets);
@@ -74,20 +74,20 @@ describe('TransactionController', () => {
       const data = await transfer();
 
       expect(WalletRepository.findForTransfer).toHaveBeenLastCalledWith([
-        userId,
-        receiverId,
+        user_id,
+        receiver_id,
       ]);
       expect(TransactionRepository.transfer).toHaveBeenLastCalledWith({
         wallets,
         transactionInfo: {
           amount,
           remark,
-          receiverBalance: balance + amount,
-          senderBalance: balance - amount,
-          receiver: receiverId,
-          sender: userId,
-          transactionType: TransactionType.TRANSFER,
-          isSuccessful: true,
+          receiver_balance: balance + amount,
+          sender_balance: balance - amount,
+          receiver: receiver_id,
+          sender: user_id,
+          transaction_type: TransactionType.TRANSFER,
+          is_successful: true,
         },
       });
 
@@ -97,7 +97,7 @@ describe('TransactionController', () => {
 
     it('throws NotFoundError if the two separate valid ids is not provided', async () => {
       mock(WalletRepository.findForTransfer).mockResolvedValue([
-        { balance, owner: userId },
+        { balance, owner: user_id },
       ]);
 
       expect(transfer()).rejects.toThrow(NotFoundError);
@@ -105,8 +105,8 @@ describe('TransactionController', () => {
 
     it('throws BadRequestError if balance is insufficient', async () => {
       mock(WalletRepository.findForTransfer).mockResolvedValue([
-        { balance: 0, owner: userId },
-        { balance, owner: receiverId },
+        { balance: 0, owner: user_id },
+        { balance, owner: receiver_id },
       ]);
 
       expect(transfer()).rejects.toThrow(BadRequestError);
@@ -116,7 +116,7 @@ describe('TransactionController', () => {
   describe('topUp', () => {
     const request = {
       body: { amount },
-      user: { userId },
+      user: { user_id },
     } as AuthRequest;
 
     const topUp = async () =>
@@ -124,27 +124,27 @@ describe('TransactionController', () => {
 
     it('initiates the topUp transaction', async () => {
       mock(WalletRepository.findOneBy).mockResolvedValue({ balance });
-      mock(TransactionRepository.create).mockResolvedValue([transactionId]);
+      mock(TransactionRepository.create).mockResolvedValue([transaction_id]);
       mock(PaymentService.initializeTopUp).mockResolvedValue(checkoutUrl);
 
       const data = await topUp();
 
       expect(WalletRepository.findOneBy).toHaveBeenLastCalledWith({
-        owner: userId,
+        owner: user_id,
       });
       expect(TransactionRepository.create).toHaveBeenLastCalledWith({
-        transactionType: TransactionType.TOP_UP,
+        transaction_type: TransactionType.TOP_UP,
         amount,
-        receiverBalance: balance, // same as before; hasn't been verified yet
-        receiver: userId,
+        receiver_balance: balance, // same as before; hasn't been verified yet
+        receiver: user_id,
       });
       expect(PaymentService.initializeTopUp).toHaveBeenLastCalledWith({
         amount,
-        transactionId,
+        transaction_id,
       });
 
       expect(response.json).toHaveBeenCalledTimes(1);
-      expect(data).toStrictEqual({ paymentId: transactionId, checkoutUrl });
+      expect(data).toStrictEqual({ paymentId: transaction_id, checkoutUrl });
     });
 
     it('throws NotFoundError if user is not found', async () => {
@@ -157,7 +157,7 @@ describe('TransactionController', () => {
   describe('withdraw', () => {
     const request = {
       body: { amount },
-      user: { userId },
+      user: { user_id },
     } as AuthRequest;
 
     const withdraw = async () =>
@@ -165,27 +165,27 @@ describe('TransactionController', () => {
 
     it('intitiates the withdrawal transaction', async () => {
       mock(WalletRepository.findOneBy).mockResolvedValue({ balance });
-      mock(TransactionRepository.create).mockResolvedValue([transactionId]);
+      mock(TransactionRepository.create).mockResolvedValue([transaction_id]);
       mock(PaymentService.initializeWithdrawal).mockResolvedValue(checkoutUrl);
 
       const data = await withdraw();
 
       expect(WalletRepository.findOneBy).toHaveBeenLastCalledWith({
-        owner: userId,
+        owner: user_id,
       });
       expect(TransactionRepository.create).toHaveBeenLastCalledWith({
-        transactionType: TransactionType.WITHDRAWAL,
+        transaction_type: TransactionType.WITHDRAWAL,
         amount,
-        senderBalance: balance, // same as before; hasn't been verified yet
-        sender: userId,
+        sender_balance: balance, // same as before; hasn't been verified yet
+        sender: user_id,
       });
       expect(PaymentService.initializeTopUp).toHaveBeenLastCalledWith({
         amount,
-        transactionId,
+        transaction_id,
       });
 
       expect(response.json).toHaveBeenCalledTimes(1);
-      expect(data).toStrictEqual({ paymentId: transactionId, checkoutUrl });
+      expect(data).toStrictEqual({ paymentId: transaction_id, checkoutUrl });
     });
 
     it('throws NotFoundError if user is not found', async () => {
@@ -203,8 +203,8 @@ describe('TransactionController', () => {
 
   describe('verify', () => {
     const request = {
-      body: { paymentId: transactionId },
-      user: { userId },
+      body: { paymentId: transaction_id },
+      user: { user_id },
     } as AuthRequest;
 
     const verify = async () =>
@@ -216,14 +216,14 @@ describe('TransactionController', () => {
 
       mock(PaymentService.verifyTransaction).mockResolvedValue({
         success: true,
-        transactionId,
+        transaction_id,
       });
       mock(TransactionRepository.findOneBy).mockResolvedValue({
-        transactionId,
-        isSuccessful: false,
-        senderBalance: balance, // same as before; hasn't been verified yet
+        transaction_id,
+        is_successful: false,
+        sender_balance: balance, // same as before; hasn't been verified yet
         amount,
-        transactionType: TransactionType.WITHDRAWAL,
+        transaction_type: TransactionType.WITHDRAWAL,
       });
 
       mock(WalletRepository.findOneBy).mockResolvedValue(wallet);
@@ -235,16 +235,16 @@ describe('TransactionController', () => {
         paymentId
       );
       expect(TransactionRepository.findOneBy).toHaveBeenLastCalledWith({
-        transactionId,
+        transaction_id,
       });
       expect(WalletRepository.findOneBy).toHaveBeenLastCalledWith({
-        owner: userId,
+        owner: user_id,
       });
       expect(TransactionRepository.verify).toHaveBeenLastCalledWith({
         wallet: { balance: balance - amount }, // will be '+' for topUp
         transaction: {
-          transactionId,
-          update: { isSuccessful: true, senderBalance: balance - amount }, // will be '+' for topUp
+          transaction_id,
+          update: { is_successful: true, sender_balance: balance - amount }, // will be '+' for topUp
         },
       });
 
@@ -255,7 +255,7 @@ describe('TransactionController', () => {
     it('throws BadRequestError if payment id is invalid', async () => {
       mock(PaymentService.verifyTransaction).mockResolvedValue({
         success: false,
-        transactionId,
+        transaction_id,
       });
       expect(verify()).rejects.toThrow(BadRequestError);
     });
@@ -263,7 +263,7 @@ describe('TransactionController', () => {
     it('throws NotFoundError if transaction is not found', async () => {
       mock(PaymentService.verifyTransaction).mockResolvedValue({
         success: true,
-        transactionId,
+        transaction_id,
       });
       mock(TransactionRepository.findOneBy).mockResolvedValue(false);
 
@@ -273,15 +273,15 @@ describe('TransactionController', () => {
     it('throws BadRequestError if transaction is already verified', async () => {
       mock(PaymentService.verifyTransaction).mockResolvedValue({
         success: false,
-        transactionId,
+        transaction_id,
       });
 
       mock(TransactionRepository.findOneBy).mockResolvedValue({
-        transactionId,
-        isSuccessful: true, // transaction is already verified
-        senderBalance: balance,
+        transaction_id,
+        is_successful: true, // transaction is already verified
+        sender_balance: balance,
         amount,
-        transactionType: TransactionType.WITHDRAWAL,
+        transaction_type: TransactionType.WITHDRAWAL,
       });
 
       expect(verify()).rejects.toThrow(BadRequestError);

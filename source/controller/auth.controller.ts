@@ -28,7 +28,7 @@ export class AuthController {
       email,
       phone,
       password: unhashedPassword,
-      firstName,
+      first_name,
     } = body as SignUpDto;
 
     const user = await UserRepository.checkEmailOrPhone({ email, phone }); // check if a user with the email exists
@@ -50,7 +50,7 @@ export class AuthController {
      * We can do this by leveraging the transaction feature.
      */
     await UserRepository.signUp(userInfo); // this creates a user and wallet
-    EmailService.sendOtp({ to: email, otp, name: firstName });
+    EmailService.sendOtp({ to: email, otp, name: first_name });
 
     return res.json({
       message: 'User created successfully! An otp has been sent to the mail',
@@ -67,18 +67,18 @@ export class AuthController {
     const isValidOtp = await Helper.isValidOtp({
       inputOtp: otp,
       generatedOtp: user.otp,
-      lastUpdated: user.updatedAt,
+      lastUpdated: user.updated_at,
     });
     if (!isValidOtp) throw new AuthError('Invalid otp');
 
     await UserRepository.updateOne({
       where: { email },
-      update: { isVerified: true },
+      update: { is_verified: true },
     });
 
     const accessToken = createJWT(user);
 
-    user.isVerified = true; // for the response
+    user.is_verified = true; // for the response
     const data = Helper.omitUserInfo({ ...user, accessToken });
 
     return res.json({
@@ -89,10 +89,10 @@ export class AuthController {
   }
 
   static async updateEmail({ body }: Request, res: Response) {
-    const { email, userId } = body as UpdateEmailDto;
+    const { email, user_id } = body as UpdateEmailDto;
     const possibleUsers = await UserRepository.checkEmailOrId(body);
 
-    const foundUser = possibleUsers.find((user) => user.userId === userId);
+    const foundUser = possibleUsers.find((user) => user.user_id === user_id);
     if (!foundUser) throw new NotFoundError('User not found!');
 
     /**
@@ -107,13 +107,13 @@ export class AuthController {
       throw new AuthError('The email is already in use');
 
     const otp = Helper.generateRandomOtp();
-    const update = { email, otp, isVerified: false };
+    const update = { email, otp, is_verified: false };
 
     await UserRepository.updateOne({
-      where: { userId },
+      where: { user_id },
       update,
     });
-    await EmailService.sendOtp({ to: email, otp, name: foundUser.firstName });
+    await EmailService.sendOtp({ to: email, otp, name: foundUser.first_name });
 
     foundUser.email = email; // for the response
     foundUser.otp = otp; // for the response
@@ -137,7 +137,7 @@ export class AuthController {
     const passwordMatches = await comparePassword(password, user.password);
     if (!passwordMatches) throw new NotFoundError('Invalid email or password.');
 
-    if (user.isVerified) {
+    if (user.is_verified) {
       accessToken = createJWT(user);
     }
 
@@ -152,9 +152,9 @@ export class AuthController {
 
   static async verifyPassword({ body, user }: AuthRequest, res: Response) {
     const { password } = body;
-    const { userId } = user;
+    const { user_id } = user;
 
-    const foundUser = await UserRepository.findOneBy({ userId });
+    const foundUser = await UserRepository.findOneBy({ user_id });
     if (!foundUser) throw new NotFoundError('Invalid user.');
 
     const passwordMatches = await comparePassword(password, foundUser.password);

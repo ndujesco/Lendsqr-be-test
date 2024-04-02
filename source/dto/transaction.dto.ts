@@ -3,7 +3,7 @@ import { IsNotEmpty, IsNumber, IsOptional, Min } from 'class-validator';
 export class TransferDto {
   @IsNotEmpty()
   @IsNumber()
-  receiverId: number;
+  receiver_id: number;
 
   @IsNumber()
   @Min(100)

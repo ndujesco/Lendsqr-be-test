@@ -13,7 +13,7 @@ export const comparePassword = (password: string, hash: string) => {
 
 export const createJWT = (user: UserI) => {
   const token = jwt.sign(
-    { userId: user.userId, email: user.email },
+    { user_id: user.user_id, email: user.email },
     process.env.JWT_SECRET as string,
     {
       expiresIn: process.env.JWT_EXPIRATION_TIME,

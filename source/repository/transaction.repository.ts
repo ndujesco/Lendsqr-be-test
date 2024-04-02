@@ -4,31 +4,31 @@ import { WalletRepository } from './wallet.repository';
 
 import { TransactionI, TransactionType, WalletI } from '../util/interface.util';
 export class TransactionRepository {
-  static async findAllMyTransactions(userId: number): Promise<TransactionI[]> {
+  static async findAllMyTransactions(user_id: number): Promise<TransactionI[]> {
     return await db('transaction')
-      .where({ sender: userId })
-      .orWhere({ receiver: userId });
+      .where({ sender: user_id })
+      .orWhere({ receiver: user_id });
   }
 
   static async findMyTransactionsByType(options: {
-    userId: number;
-    transactionType: TransactionType;
+    user_id: number;
+    transaction_type: TransactionType;
   }): Promise<TransactionI[]> {
-    const { userId, transactionType } = options;
+    const { user_id, transaction_type } = options;
     return await db('transaction')
-      .where({ sender: userId, transactionType })
-      .orWhere({ receiver: userId, transactionType });
+      .where({ sender: user_id, transaction_type })
+      .orWhere({ receiver: user_id, transaction_type });
   }
 
   static async findMyTransactionsByPage(options: {
-    userId: number;
+    user_id: number;
     take: number;
     skip: number;
   }): Promise<TransactionI[]> {
-    const { userId, take, skip } = options;
+    const { user_id, take, skip } = options;
     return await db('transaction')
-      .where({ sender: userId })
-      .orWhere({ receiver: userId })
+      .where({ sender: user_id })
+      .orWhere({ receiver: user_id })
       .limit(take)
       .offset(skip);
   }
@@ -37,7 +37,7 @@ export class TransactionRepository {
     return await db('transaction')
       .where({ sender: user1, receiver: user2 })
       .orWhere({ sender: user2, receiver: user1 })
-      .andWhere({ transactionType: TransactionType.TRANSFER });
+      .andWhere({ transaction_type: TransactionType.TRANSFER });
   }
 
   static async create(
@@ -60,11 +60,11 @@ export class TransactionRepository {
 
   static async verify(options: {
     wallet: WalletI;
-    transaction: { transactionId: number; update: Partial<TransactionI> };
+    transaction: { transaction_id: number; update: Partial<TransactionI> };
   }) {
     const { wallet, transaction } = options;
 
-    const { transactionId, update } = transaction;
+    const { transaction_id, update } = transaction;
     const { owner, balance } = wallet;
 
     try {
@@ -75,7 +75,7 @@ export class TransactionRepository {
         });
 
         await TransactionRepository.updateOne({
-          where: { transactionId },
+          where: { transaction_id },
           update,
         });
       });
@@ -90,20 +90,20 @@ export class TransactionRepository {
   }) {
     const { wallets, transactionInfo } = options;
     const [
-      { owner: sender, balance: senderBalance },
-      { owner: receiver, balance: receiverBalance },
+      { owner: sender, balance: sender_balance },
+      { owner: receiver, balance: receiver_balance },
     ] = wallets;
 
     try {
       await db.transaction(async (trx) => {
         await WalletRepository.updateOne({
           where: { owner: sender },
-          update: { balance: senderBalance },
+          update: { balance: sender_balance },
         });
 
         await WalletRepository.updateOne({
           where: { owner: receiver },
-          update: { balance: receiverBalance },
+          update: { balance: receiver_balance },
         });
 
         await TransactionRepository.create(transactionInfo);

@@ -17,9 +17,9 @@ import { GetUserByDto, UserTransactionsDto } from '../dto/user.dto';
 
 export class UserController {
   static async getMyProfile({ user }: AuthRequest, res: Response) {
-    const { userId } = user;
+    const { user_id } = user;
 
-    const foundUser = await UserRepository.findMyProfile(userId);
+    const foundUser = await UserRepository.findMyProfile(user_id);
     if (!foundUser)
       throw new NotFoundError('This user does not exist in the database.');
 
@@ -27,8 +27,8 @@ export class UserController {
   }
 
   static async getMyBalance({ user }: AuthRequest, res: Response) {
-    const { userId } = user;
-    const wallet = await WalletRepository.findOneBy({ owner: userId });
+    const { user_id } = user;
+    const wallet = await WalletRepository.findOneBy({ owner: user_id });
     if (!wallet)
       throw new NotFoundError('This user does not exist in the database.');
 
@@ -43,20 +43,20 @@ export class UserController {
     { user, query }: AuthRequest,
     res: Response
   ) {
-    const { userId } = user;
-    const { transactionType } = query as unknown as UserTransactionsDto;
+    const { user_id } = user;
+    const { transaction_type } = query as unknown as UserTransactionsDto;
 
     let transactions: TransactionI[] | Record<TransactionType, TransactionI[]>;
 
-    if (!transactionType) {
-      transactions = await TransactionRepository.findAllMyTransactions(userId);
+    if (!transaction_type) {
+      transactions = await TransactionRepository.findAllMyTransactions(user_id);
     } else {
       transactions = await TransactionRepository.findMyTransactionsByType({
-        userId,
-        transactionType,
+        user_id,
+        transaction_type,
       });
     }
-    transactions = Helper.removeTransactionFields(transactions, userId);
+    transactions = Helper.removeTransactionFields(transactions, user_id);
     transactions = Helper.groupByTransactionType(transactions);
 
     return res.json({
@@ -73,16 +73,16 @@ export class UserController {
 
     const take = Number(process.env.PER_PAGE);
     const skip = (page - 1) * take;
-    const { userId } = user;
+    const { user_id } = user;
 
     let transactions: TransactionI[] =
       await TransactionRepository.findMyTransactionsByPage({
-        userId,
+        user_id,
         skip,
         take,
       });
 
-    transactions = Helper.removeTransactionFields(transactions, userId);
+    transactions = Helper.removeTransactionFields(transactions, user_id);
 
     return res.json({
       message: 'Successful',
@@ -95,8 +95,8 @@ export class UserController {
     { user, query }: AuthRequest,
     res: Response
   ) {
-    const { userId: loggedUser } = user;
-    const otherUser = Number(query.userId) || 0;
+    const { user_id: loggedUser } = user;
+    const otherUser = Number(query.user_id) || 0;
 
     const transactions = await TransactionRepository.findCommonTransactions(
       loggedUser,
@@ -111,9 +111,9 @@ export class UserController {
   }
 
   static async getUserFromWalletNumber({ query }: AuthRequest, res: Response) {
-    const { walletNumber } = query;
+    const { wallet_number } = query;
     const user = await UserRepository.findUserByWalletNumber(
-      String(walletNumber)
+      String(wallet_number)
     );
 
     if (!user) throw new NotFoundError('User not found');
@@ -126,8 +126,8 @@ export class UserController {
   }
 
   static async getUserFromId({ query }: AuthRequest, res: Response) {
-    const userId = Number(query.userId) || 0;
-    const user = await UserRepository.findProfilesBy('userId', userId);
+    const user_id = Number(query.user_id) || 0;
+    const user = await UserRepository.findProfilesBy('user_id', user_id);
 
     if (!user) throw new NotFoundError('User not found');
 

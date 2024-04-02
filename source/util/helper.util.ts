@@ -33,7 +33,7 @@ export class Helper {
   }
 
   static omitUserInfo(input: any) {
-    const { password, otp, createdAt, updatedAt, ...rest } = input;
+    const { password, otp, created_at, updated_at, ...rest } = input;
     return rest;
   }
 
@@ -52,7 +52,7 @@ export class Helper {
 
   static groupByTransactionType(transactions: TransactionI[]) {
     return transactions.reduce((result, obj) => {
-      const type = obj.transactionType;
+      const type = obj.transaction_type;
       if (!result[type]) {
         result[type] = [];
       }
@@ -63,11 +63,11 @@ export class Helper {
 
   static removeTransactionFields(
     transactions: TransactionI[],
-    userId: number
+    user_id: number
   ): TransactionI[] {
     return transactions.map((transaction) => {
-      const { senderBalance, receiverBalance, sender, ...rest } = transaction;
-      const walletBalance = sender === userId ? senderBalance : receiverBalance;
+      const { sender_balance, receiver_balance, sender, ...rest } = transaction;
+      const walletBalance = sender === user_id ? sender_balance : receiver_balance;
       return {
         ...rest,
         walletBalance,

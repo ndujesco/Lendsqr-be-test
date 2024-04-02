@@ -33,11 +33,11 @@ const [
   otherUserId,
   balance,
   pageNumber,
-  walletNumber,
+  wallet_number,
   // checkoutUrl,
   // remark,
   // amount,
-] = [1, 2, '<balance>', null, '<walletNumber>'];
+] = [1, 2, '<balance>', null, '<wallet_number>'];
 
 describe('UserController', () => {
   let response: Response;
@@ -53,7 +53,7 @@ describe('UserController', () => {
   });
 
   describe('getMyProfile', () => {
-    const request = { user: { userId: loggedUserId } } as AuthRequest;
+    const request = { user: { user_id: loggedUserId } } as AuthRequest;
 
     const getMyProfile = async () =>
       await UserController.getMyProfile(request, response);
@@ -79,7 +79,7 @@ describe('UserController', () => {
   });
 
   describe('getMyBalance', () => {
-    const request = { user: { userId: loggedUserId } } as AuthRequest;
+    const request = { user: { user_id: loggedUserId } } as AuthRequest;
 
     const getMyBalance = async () =>
       await UserController.getMyBalance(request, response);
@@ -106,8 +106,8 @@ describe('UserController', () => {
 
   describe('getTransactionsByType', () => {
     const request = {
-      user: { userId: loggedUserId },
-      query: { transactionType: TransactionType.TRANSFER },
+      user: { user_id: loggedUserId },
+      query: { transaction_type: TransactionType.TRANSFER },
     } as unknown as AuthRequest;
 
     const getTransactionsByType = async () =>
@@ -130,8 +130,8 @@ describe('UserController', () => {
       expect(
         TransactionRepository.findMyTransactionsByType
       ).toHaveBeenLastCalledWith({
-        userId: loggedUserId,
-        transactionType: TransactionType.TRANSFER,
+        user_id: loggedUserId,
+        transaction_type: TransactionType.TRANSFER,
       });
 
       expect(Helper.removeTransactionFields).toHaveBeenLastCalledWith(
@@ -150,7 +150,7 @@ describe('UserController', () => {
 
   describe('getTransactions', () => {
     const request = {
-      user: { userId: loggedUserId },
+      user: { user_id: loggedUserId },
       query: { pageNumber },
     } as unknown as AuthRequest;
 
@@ -171,7 +171,7 @@ describe('UserController', () => {
       expect(
         TransactionRepository.findMyTransactionsByPage
       ).toHaveBeenLastCalledWith({
-        userId: loggedUserId,
+        user_id: loggedUserId,
         skip: 0,
         take: Number(process.env.PER_PAGE),
       });
@@ -188,8 +188,8 @@ describe('UserController', () => {
 
   describe('getCommonTransactions', () => {
     const request = {
-      user: { userId: loggedUserId },
-      query: { userId: otherUserId },
+      user: { user_id: loggedUserId },
+      query: { user_id: otherUserId },
     } as unknown as AuthRequest;
 
     const getCommonTransactions = async () =>
@@ -212,7 +212,7 @@ describe('UserController', () => {
   });
 
   describe('getUserFromWalletNumber', () => {
-    const request = { query: { walletNumber } } as unknown as AuthRequest;
+    const request = { query: { wallet_number } } as unknown as AuthRequest;
 
     const getUserFromWalletNumber = async () =>
       await UserController.getUserFromWalletNumber(request, response);
@@ -225,7 +225,7 @@ describe('UserController', () => {
       const data = await getUserFromWalletNumber();
 
       expect(UserRepository.findUserByWalletNumber).toHaveBeenLastCalledWith(
-        walletNumber
+        wallet_number
       );
 
       expect(response.json).toHaveBeenCalledTimes(1);
@@ -241,7 +241,7 @@ describe('UserController', () => {
 
   describe('getUserFromId', () => {
     const request = {
-      query: { userId: otherUserId },
+      query: { user_id: otherUserId },
     } as unknown as AuthRequest;
 
     const getUserFromId = async () =>
@@ -255,7 +255,7 @@ describe('UserController', () => {
       const data = await getUserFromId();
 
       expect(UserRepository.findProfilesBy).toHaveBeenLastCalledWith(
-        'userId',
+        'user_id',
         otherUserId
       );
 

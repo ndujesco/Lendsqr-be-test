@@ -5,43 +5,43 @@ export interface AuthRequest extends Request {
 }
 
 export interface UserI {
-  userId: number;
-  firstName: string;
-  lastName: string;
+  user_id: number;
+  first_name: string;
+  last_name: string;
   password: string;
-  isVerified: boolean;
+  is_verified: boolean;
   otp: string;
   email: string;
   phone: string;
-  createdAt: Date;
-  updatedAt: Date;
+  created_at: Date;
+  updated_at: Date;
 }
 
 export interface TransactionI {
-  transactionId: number;
-  transactionUUID: string;
-  transactionType: TransactionType;
+  transaction_id: number;
+  transaction_uuid: string;
+  transaction_type: TransactionType;
   amount: number;
   remark: string;
 
-  receiverBalance: number; // not to be returned
-  senderBalance: number; // not to be returned
+  receiver_balance: number; // not to be returned
+  sender_balance: number; // not to be returned
   walletBalance: number; //to be returned
-  sender: number; //walletId
-  receiver: number; //walletId
-  createdAt: Date;
-  updatedAt: Date;
+  sender: number; //wallet_id
+  receiver: number; //wallet_id
+  created_at: Date;
+  updated_at: Date;
 
-  isSuccessful: boolean;
+  is_successful: boolean;
 }
 
 export interface WalletI {
-  walletId: number;
+  wallet_id: number;
   balance: number;
-  walletNumber: string;
-  owner: number; //userId
-  createdAt: Date;
-  updatedAt: Date;
+  wallet_number: string;
+  owner: number; //user_id
+  created_at: Date;
+  updated_at: Date;
 }
 
 export enum TransactionType {

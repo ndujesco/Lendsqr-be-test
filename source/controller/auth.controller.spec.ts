@@ -32,8 +32,8 @@ jest.mock('../util/helper.util');
 const mock = (input: any) => input as jest.Mock;
 
 const [
-  firstName,
-  lastName,
+  first_name,
+  last_name,
   email,
   password,
   phone,
@@ -41,10 +41,10 @@ const [
   hashedPassword,
   lastUpdated,
   accessToken,
-  userId,
+  user_id,
 ] = [
-  '<firstName>',
-  '<lastName>',
+  '<first_name>',
+  '<last_name>',
   '<email>',
   '<password>',
   '<phone>',
@@ -73,8 +73,8 @@ describe('AuthController', () => {
   describe('signUp', () => {
     const request = {
       body: {
-        firstName,
-        lastName,
+        first_name,
+        last_name,
         email,
         password,
         phone,
@@ -85,7 +85,7 @@ describe('AuthController', () => {
 
     it('creates a user their wallet in the database if successful', async () => {
       const { body } = request;
-      const { email, phone, password, firstName } = body;
+      const { email, phone, password, first_name } = body;
       mock(UserRepository.checkEmailOrPhone).mockResolvedValue(false);
       mock(KarmaService.userIsBlacklisted).mockResolvedValue(false);
       mock(Helper.generateRandomOtp).mockReturnValue(otp);
@@ -112,7 +112,7 @@ describe('AuthController', () => {
       expect(EmailService.sendOtp).toHaveBeenLastCalledWith({
         to: email,
         otp,
-        name: firstName,
+        name: first_name,
       });
       expect(response.json).toHaveBeenCalledTimes(1);
       expect(data).toStrictEqual(undefined);
@@ -141,7 +141,7 @@ describe('AuthController', () => {
     it("verifies the user's email", async () => {
       const findOneByResult = {
         otp,
-        updatedAt: lastUpdated,
+        updated_at: lastUpdated,
       };
 
       mock(UserRepository.findOneBy).mockResolvedValue(findOneByResult);
@@ -162,7 +162,7 @@ describe('AuthController', () => {
 
       expect(UserRepository.updateOne).toHaveBeenLastCalledWith({
         where: { email },
-        update: { isVerified: true },
+        update: { is_verified: true },
       });
       expect(Helper.omitUserInfo).toHaveBeenLastCalledWith({
         ...findOneByResult,
@@ -188,7 +188,7 @@ describe('AuthController', () => {
   });
 
   describe('updateEmail', () => {
-    const request = { body: { email, userId } } as Request;
+    const request = { body: { email, user_id } } as Request;
 
     const updateEmail = async () =>
       await AuthController.updateEmail(request, response);
@@ -198,7 +198,7 @@ describe('AuthController', () => {
       const { email } = body;
 
       mock(UserRepository.checkEmailOrId).mockResolvedValue([
-        { userId, firstName, otp, email },
+        { user_id, first_name, otp, email },
       ]);
       mock(Helper.generateRandomOtp).mockReturnValue(otp);
       mock(Helper.omitUserInfo).mockReturnValue('<omitUserInfoResult>');
@@ -208,20 +208,20 @@ describe('AuthController', () => {
       expect(EmailService.sendOtp).toHaveBeenLastCalledWith({
         to: email,
         otp,
-        name: firstName,
+        name: first_name,
       });
 
       expect(UserRepository.checkEmailOrId).toHaveBeenLastCalledWith(body);
       expect(Helper.generateRandomOtp).toHaveBeenCalledTimes(1);
 
       expect(UserRepository.updateOne).toHaveBeenLastCalledWith({
-        where: { userId },
-        update: { isVerified: false, email, otp },
+        where: { user_id },
+        update: { is_verified: false, email, otp },
       });
       expect(EmailService.sendOtp).toHaveBeenLastCalledWith({
         to: email,
         otp,
-        name: firstName,
+        name: first_name,
       });
 
       expect(response.json).toHaveBeenCalledTimes(1);
@@ -230,7 +230,7 @@ describe('AuthController', () => {
 
     it('throws NotFoundError if user is not found', async () => {
       mock(UserRepository.checkEmailOrId).mockResolvedValue([
-        { userId: '<notUserId>', firstName, otp, email },
+        { user_id: '<notUserId>', first_name, otp, email },
       ]);
 
       expect(updateEmail()).rejects.toThrow(NotFoundError);
@@ -238,8 +238,8 @@ describe('AuthController', () => {
 
     it('throws AuthError if email is in use by another user', async () => {
       mock(UserRepository.checkEmailOrId).mockResolvedValue([
-        { userId: '<notUserId>', firstName, otp, email },
-        { userId, firstName, otp, email },
+        { user_id: '<notUserId>', first_name, otp, email },
+        { user_id, first_name, otp, email },
       ]);
 
       expect(updateEmail()).rejects.toThrow(AuthError);
@@ -254,7 +254,7 @@ describe('AuthController', () => {
     it('signs in the user and returns an accessToken if they are verified', async () => {
       const findOneByResult = {
         password,
-        isVerified: true,
+        is_verified: true,
       };
 
       mock(UserRepository.findOneBy).mockResolvedValue(findOneByResult);
@@ -279,7 +279,7 @@ describe('AuthController', () => {
     it('does not return accessToken if they are not found', async () => {
       const findOneByResult = {
         password,
-        isVerified: false,
+        is_verified: false,
       };
       mock(UserRepository.findOneBy).mockResolvedValue(findOneByResult);
 
@@ -308,7 +308,7 @@ describe('AuthController', () => {
   });
 
   describe('verifyPassword', () => {
-    const request = { body: { password }, user: { userId } } as AuthRequest;
+    const request = { body: { password }, user: { user_id } } as AuthRequest;
 
     const verifyPassword = async () =>
       await AuthController.verifyPassword(request, response);
@@ -319,7 +319,7 @@ describe('AuthController', () => {
 
       const data = await verifyPassword();
 
-      expect(UserRepository.findOneBy).toHaveBeenLastCalledWith({ userId });
+      expect(UserRepository.findOneBy).toHaveBeenLastCalledWith({ user_id });
       expect(comparePassword).toHaveBeenLastCalledWith(password, password);
 
       expect(response.json).toHaveBeenCalledTimes(1);

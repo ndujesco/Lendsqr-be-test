@@ -3,68 +3,50 @@ import type { Knex } from 'knex';
 export async function up(knex: Knex): Promise<void> {
   return knex.schema
     .createTable('user', (table) => {
-      table.increments('userId').primary().notNullable();
-      table.string('firstName').notNullable();
-      table.string('lastName').notNullable();
+      table.increments('user_id').primary().notNullable();
+      table.string('first_name').notNullable();
+      table.string('last_name').notNullable();
       table.string('password').notNullable();
       table.string('email').unique().notNullable();
-      table.boolean('isVerified').defaultTo(false).notNullable();
+      table.boolean('is_verified').defaultTo(false).notNullable();
       table.string('otp').notNullable();
       table.string('phone').notNullable();
-      table
-        .dateTime('createdAt')
-        .defaultTo(knex.raw('CURRENT_TIMESTAMP'))
-        .notNullable();
-      table
-        .dateTime('updatedAt')
-        .defaultTo(knex.raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
-        .notNullable();
+      table.timestamps(true, true).notNullable();
     })
 
     .createTable('wallet', (table) => {
-      table.increments('walletId').primary().notNullable();
+      table.increments('wallet_id').primary().notNullable();
       table.float('balance').defaultTo(0).notNullable();
-      table.string('walletNumber').unique().notNullable();
-      table
-        .dateTime('createdAt')
-        .defaultTo(knex.raw('CURRENT_TIMESTAMP'))
-        .notNullable();
-      table
-        .dateTime('updatedAt')
-        .defaultTo(knex.raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
-        .notNullable();
+      table.string('wallet_number').unique().notNullable();
+      table.timestamps(true, true).notNullable();
 
       table
         .integer('owner')
         .unsigned()
-        .references('userId')
+        .references('user_id')
         .inTable('user')
         .onDelete('CASCADE')
         .notNullable();
     })
 
     .createTable('transaction', (table) => {
-      table.increments('transactionId').primary().notNullable();
-      table.uuid('transactionUUID').defaultTo(knex.fn.uuid()).notNullable();
+      table.increments('transaction_id').primary().notNullable();
+      table.uuid('transaction_uuid').defaultTo(knex.fn.uuid()).notNullable();
       table
-        .enu('transactionType', ['topUp', 'withdrawal', 'transfer'])
+        .enu('transaction_type', ['topUp', 'withdrawal', 'transfer'])
         .notNullable();
-      table.float('amount').notNullable();
-      table.float('senderBalance').nullable(); // not to be returned
-      table.float('receiverBalance').nullable(); // these fields will not be returned to user instead a 'walletBalance' field will be returned which will be either senderBalance or receiverBalance
-      table.boolean('isSuccessful').defaultTo(false).notNullable();
 
+      table.float('amount').notNullable();
+      table.float('sender_balance').nullable(); // not to be returned
+      table.float('receiver_balance').nullable(); // these fields will not be returned to user instead a 'walletBalance' field will be returned which will be either sender_balance or receiver_balance
+      table.boolean('is_successful').defaultTo(false).notNullable();
       table.string('remark').nullable();
-      table.dateTime('createdAt').defaultTo(knex.raw('CURRENT_TIMESTAMP'));
-      table
-        .dateTime('updatedAt')
-        .defaultTo(knex.raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
-        .notNullable();
+      table.timestamps(true, true).notNullable();
 
       table
         .integer('sender')
         .unsigned()
-        .references('userId')
+        .references('user_id')
         .inTable('user')
         .onDelete('CASCADE')
         .nullable();
@@ -72,11 +54,16 @@ export async function up(knex: Knex): Promise<void> {
       table
         .integer('receiver')
         .unsigned()
-        .references('userId')
+        .references('user_id')
         .inTable('user')
         .onDelete('CASCADE')
         .nullable();
     });
 }
 
-export async function down(knex: Knex): Promise<void> {}
+export async function down(knex: Knex): Promise<void> {
+  return knex.schema
+    .dropTableIfExists('transaction')
+    .dropTableIfExists('wallet')
+    .dropTableIfExists('user');
+}

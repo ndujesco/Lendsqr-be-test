@@ -16,10 +16,10 @@ export class SignInDto {
 
 export class SignUpDto extends SignInDto {
   @IsString()
-  firstName: string;
+  first_name: string;
 
   @IsString()
-  lastName: string;
+  last_name: string;
 
   @IsPhoneNumber()
   phone: string;
@@ -39,7 +39,7 @@ export class UpdateEmailDto {
   email: string;
 
   @IsNumber()
-  userId: number;
+  user_id: number;
 }
 
 export class VerifyPasswordDto {

@@ -7,8 +7,8 @@ export class UserRepository {
   static async signUp(userInfo: Partial<UserI>) {
     try {
       db.transaction(async (trx) => {
-        const [userId] = await UserRepository.create(userInfo);
-        WalletRepository.create(userId);
+        const [user_id] = await UserRepository.create(userInfo);
+        WalletRepository.create(user_id);
       });
     } catch (error) {
       throw error; // probably an issue with the database
@@ -28,8 +28,8 @@ export class UserRepository {
   }
 
   static async checkEmailOrId(where: Partial<UserI>): Promise<UserI[]> {
-    const { email, userId } = where;
-    return await db('user').where({ email }).orWhere({ userId });
+    const { email, user_id } = where;
+    return await db('user').where({ email }).orWhere({ user_id });
   }
 
   static async updateOne(options: {
@@ -40,34 +40,34 @@ export class UserRepository {
     return await db('user').where(where).update(update);
   }
 
-  static async findMyProfile(userId: number) {
+  static async findMyProfile(user_id: number) {
     return await db('user')
       .select(
-        'userId',
-        'firstName',
-        'lastName',
+        'user_id',
+        'first_name',
+        'last_name',
         'email',
-        'isVerified',
+        'is_verified',
         'phone',
         'balance',
-        'walletNumber'
+        'wallet_number'
       )
-      .where({ userId })
-      .leftJoin('wallet', 'user.userId', 'wallet.owner')
+      .where({ user_id })
+      .leftJoin('wallet', 'user.user_id', 'wallet.owner')
       .first();
   }
 
-  static async findUserByWalletNumber(walletNumber: string) {
+  static async findUserByWalletNumber(wallet_number: string) {
     return await db('wallet')
-      .select('userId', 'firstName', 'lastName', 'email', 'isVerified', 'phone')
-      .where({ walletNumber, isVerified: true })
-      .leftJoin('user', 'wallet.owner', 'user.userId')
+      .select('user_id', 'first_name', 'last_name', 'email', 'is_verified', 'phone')
+      .where({ wallet_number, is_verified: true })
+      .leftJoin('user', 'wallet.owner', 'user.user_id')
       .first();
   }
 
   static async findProfilesBy(key: string, value: string | number) {
     return await db('user')
-      .select('userId', 'firstName', 'lastName', 'email', 'isVerified', 'phone')
+      .select('user_id', 'first_name', 'last_name', 'email', 'is_verified', 'phone')
       .where(key, value);
   }
 }

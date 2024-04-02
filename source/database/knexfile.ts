@@ -39,6 +39,9 @@ const configs: { [key: string]: Knex.Config } = {
       password: DB_PASS,
       database: DB_NAME,
     },
+    migrations: {
+      directory: '../../migrations',
+    },
   },
 };
 

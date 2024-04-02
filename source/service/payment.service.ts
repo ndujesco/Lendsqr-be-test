@@ -3,7 +3,7 @@ export class PaymentService {
 
   static async initializeWithdrawal(input: {
     amount: number;
-    transactionId: number;
+    transaction_id: number;
   }): Promise<string> {
     /**
      * The service generates the checkout link accordingly.
@@ -16,7 +16,7 @@ export class PaymentService {
 
   static async initializeTopUp(input: {
     amount: number;
-    transactionId: number;
+    transaction_id: number;
   }): Promise<string> {
     /**
      * The service generates the checkout link accordingly.
@@ -32,11 +32,11 @@ export class PaymentService {
      * The API to verify if the transaction was successful.
      */
 
-    const transactionId = serviceTransactionId;
+    const transaction_id = serviceTransactionId;
     const success = Math.random() * 100 < 95; // 95% success rate
 
     return {
-      transactionId,
+      transaction_id,
       success,
     };
   }

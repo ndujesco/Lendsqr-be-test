@@ -1,6 +1,7 @@
 import { Transporter, createTransport } from 'nodemailer';
 
 import { Helper } from '../util/helper.util';
+import logger from '../util/winston.util';
 
 export class EmailService {
   private static transporter: Transporter = createTransport({
@@ -13,6 +14,7 @@ export class EmailService {
 
   static async sendOtp(input: { to: string; otp: string; name: string }) {
     const { to, otp, name } = input;
+    logger.info(`Sending OTP to ${to}`);
 
     const mailOptions = {
       from: process.env.EMAIL_USER,

@@ -12,7 +12,9 @@ const app: Application = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => res.json({ message: 'Welcome!' }));
+app.get('/api/v1', (req, res) =>
+  res.json({ message: 'WELCOME TO DEMO CREDIT!' })
+);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/transaction', transactionRouter);
 app.use('/api/v1/user', userRouter);

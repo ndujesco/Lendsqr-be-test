@@ -55,7 +55,7 @@ export class TransactionController {
     return res.json({ message: 'Transfer successful', success: true });
   }
 
-  static async topUp({ body, user }: AuthRequest, res: Response) {
+  static async topup({ body, user }: AuthRequest, res: Response) {
     const { amount } = body;
     const { user_id: owner } = user;
 

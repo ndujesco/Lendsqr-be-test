@@ -45,7 +45,7 @@ export interface WalletI {
 }
 
 export enum TransactionType {
-  TOP_UP = 'topUp',
+  TOP_UP = 'topup',
   WITHDRAWAL = 'withdrawal',
   TRANSFER = 'transfer',
 }

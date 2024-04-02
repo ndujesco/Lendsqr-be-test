@@ -33,7 +33,7 @@ export async function up(knex: Knex): Promise<void> {
       table.increments('transaction_id').primary().notNullable();
       table.uuid('transaction_uuid').defaultTo(knex.fn.uuid()).notNullable();
       table
-        .enu('transaction_type', ['topUp', 'withdrawal', 'transfer'])
+        .enu('transaction_type', ['topup', 'withdrawal', 'transfer'])
         .notNullable();
 
       table.float('amount').notNullable();

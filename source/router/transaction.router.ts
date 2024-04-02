@@ -28,10 +28,10 @@ transactionRouter.post(
 );
 
 transactionRouter.post(
-  '/topUp',
+  '/topup',
   protect,
   RequestValidator.validate(InitiateTransactionDto, 'body'),
-  TransactionController.topUp
+  TransactionController.topup
 );
 
 transactionRouter.post(

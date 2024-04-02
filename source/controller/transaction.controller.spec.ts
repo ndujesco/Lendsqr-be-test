@@ -113,21 +113,21 @@ describe('TransactionController', () => {
     });
   });
 
-  describe('topUp', () => {
+  describe('topup', () => {
     const request = {
       body: { amount },
       user: { user_id },
     } as AuthRequest;
 
-    const topUp = async () =>
-      await TransactionController.topUp(request, response);
+    const topup = async () =>
+      await TransactionController.topup(request, response);
 
-    it('initiates the topUp transaction', async () => {
+    it('initiates the topup transaction', async () => {
       mock(WalletRepository.findOneBy).mockResolvedValue({ balance });
       mock(TransactionRepository.create).mockResolvedValue([transaction_id]);
       mock(PaymentService.initializeTopUp).mockResolvedValue(checkoutUrl);
 
-      const data = await topUp();
+      const data = await topup();
 
       expect(WalletRepository.findOneBy).toHaveBeenLastCalledWith({
         owner: user_id,
@@ -150,7 +150,7 @@ describe('TransactionController', () => {
     it('throws NotFoundError if user is not found', async () => {
       mock(WalletRepository.findOneBy).mockResolvedValue(false);
 
-      expect(topUp()).rejects.toThrow(NotFoundError);
+      expect(topup()).rejects.toThrow(NotFoundError);
     });
   });
 
@@ -241,10 +241,10 @@ describe('TransactionController', () => {
         owner: user_id,
       });
       expect(TransactionRepository.verify).toHaveBeenLastCalledWith({
-        wallet: { balance: balance - amount }, // will be '+' for topUp
+        wallet: { balance: balance - amount }, // will be '+' for topup
         transaction: {
           transaction_id,
-          update: { is_successful: true, sender_balance: balance - amount }, // will be '+' for topUp
+          update: { is_successful: true, sender_balance: balance - amount }, // will be '+' for topup
         },
       });
 

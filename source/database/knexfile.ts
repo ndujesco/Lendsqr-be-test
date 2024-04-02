@@ -24,7 +24,7 @@ export const config: Knex.Config = {
       return next();
     },
 
-    // ssl: true,
+    ssl: true,
   },
   migrations: {
     directory: 'migrations',

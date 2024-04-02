@@ -16,15 +16,16 @@ const configs: { [key: string]: Knex.Config } = {
       port: Number(DB_PORT),
       user: DB_USER,
       password: DB_PASS,
-      ssl: true,
-
       database: DB_NAME,
+
       typeCast: function (field: any, next: any) {
         if (field.type == 'TINY' && field.length == 1) {
           return field.string() == '1'; // 1 = true, 0 = false
         }
         return next();
       },
+
+      ssl: true,
     },
     migrations: {
       directory: 'migrations',
@@ -39,6 +40,15 @@ const configs: { [key: string]: Knex.Config } = {
       user: DB_USER,
       password: DB_PASS,
       database: DB_NAME,
+
+      typeCast: function (field: any, next: any) {
+        if (field.type == 'TINY' && field.length == 1) {
+          return field.string() == '1'; // 1 = true, 0 = false
+        }
+        return next();
+      },
+
+      ssl: true,
     },
     migrations: {
       directory: 'migrations',

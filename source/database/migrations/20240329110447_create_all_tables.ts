@@ -39,8 +39,8 @@ export async function up(knex: Knex): Promise<void> {
       table.float('amount').notNullable();
       table.float('sender_balance').nullable(); // not to be returned
       table.float('receiver_balance').nullable(); // these fields will not be returned to user instead a 'walletBalance' field will be returned which will be either sender_balance or receiver_balance
+      table.text('remark').nullable();
       table.boolean('is_successful').defaultTo(false).notNullable();
-      table.string('remark').nullable();
       table.timestamps(true, true);
       table
         .integer('sender')

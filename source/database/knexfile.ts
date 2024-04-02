@@ -8,26 +8,52 @@ const { DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_NAME } = process.env;
 
 // Update with your config settings.
 
-export const config: Knex.Config = {
-  client: 'mysql',
-  connection: {
-    host: DB_HOST,
-    port: Number(DB_PORT),
-    user: DB_USER,
-    password: DB_PASS,
-    database: DB_NAME,
+const configs: { [key: string]: Knex.Config } = {
+  development: {
+    client: 'mysql',
+    connection: {
+      host: DB_HOST,
+      port: Number(DB_PORT),
+      user: DB_USER,
+      password: DB_PASS,
+      database: DB_NAME,
 
-    typeCast: function (field: any, next: any) {
-      if (field.type == 'TINY' && field.length == 1) {
-        return field.string() == '1'; // 1 = true, 0 = false
-      }
-      return next();
+      typeCast: function (field: any, next: any) {
+        if (field.type == 'TINY' && field.length == 1) {
+          return field.string() == '1'; // 1 = true, 0 = false
+        }
+        return next();
+      },
+
+      ssl: true,
     },
-
-    ssl: true,
+    migrations: {
+      directory: 'migrations',
+    },
   },
-  migrations: {
-    directory: 'migrations',
+
+  production: {
+    client: 'mysql',
+    connection: {
+      host: DB_HOST,
+      port: Number(DB_PORT),
+      user: DB_USER,
+      password: DB_PASS,
+      database: DB_NAME,
+
+      typeCast: function (field: any, next: any) {
+        if (field.type == 'TINY' && field.length == 1) {
+          return field.string() == '1'; // 1 = true, 0 = false
+        }
+        return next();
+      },
+
+      ssl: true,
+    },
+    migrations: {
+      directory: 'migrations',
+    },
   },
 };
 
+export default configs;

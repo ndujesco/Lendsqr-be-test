@@ -32,7 +32,7 @@ const [
   loggedUserId,
   otherUserId,
   balance,
-  pageNumber,
+  page_number,
   wallet_number,
   // checkoutUrl,
   // remark,
@@ -151,7 +151,7 @@ describe('UserController', () => {
   describe('getTransactions', () => {
     const request = {
       user: { user_id: loggedUserId },
-      query: { pageNumber },
+      query: { page_number },
     } as unknown as AuthRequest;
 
     const getTransactions = async () =>

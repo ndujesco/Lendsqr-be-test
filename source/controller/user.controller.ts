@@ -67,9 +67,9 @@ export class UserController {
   }
 
   static async getTransactions({ user, query }: AuthRequest, res: Response) {
-    const { pageNumber } = query;
+    const { page_number } = query;
 
-    const page = Number(pageNumber) > 0 ? Number(pageNumber) : 1;
+    const page = Number(page_number) > 0 ? Number(page_number) : 1;
 
     const take = Number(process.env.PER_PAGE);
     const skip = (page - 1) * take;

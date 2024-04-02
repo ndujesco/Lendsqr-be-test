@@ -1,8 +1,6 @@
 import { TransactionI, TransactionType } from './interface.util';
 
 export class Helper {
-  private static otpLifeSpan = 1800000; // 30 minutes
-
   static generateWalletAccountNumber(): string {
     let accountNumber = '88';
     for (let i = 0; i < 8; i++) {
@@ -40,14 +38,10 @@ export class Helper {
   static isValidOtp(input: {
     inputOtp: string;
     generatedOtp: string;
-    lastUpdated: Date;
   }): boolean {
-    const { inputOtp, generatedOtp, lastUpdated } = input;
+    const { inputOtp, generatedOtp } = input;
 
-    return (
-      inputOtp === generatedOtp &&
-      Date.now() - lastUpdated.getTime() < this.otpLifeSpan
-    );
+    return inputOtp === generatedOtp;
   }
 
   static groupByTransactionType(transactions: TransactionI[]) {
@@ -67,7 +61,8 @@ export class Helper {
   ): TransactionI[] {
     return transactions.map((transaction) => {
       const { sender_balance, receiver_balance, sender, ...rest } = transaction;
-      const walletBalance = sender === user_id ? sender_balance : receiver_balance;
+      const walletBalance =
+        sender === user_id ? sender_balance : receiver_balance;
       return {
         ...rest,
         walletBalance,

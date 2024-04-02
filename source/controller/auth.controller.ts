@@ -67,8 +67,8 @@ export class AuthController {
     const isValidOtp = await Helper.isValidOtp({
       inputOtp: otp,
       generatedOtp: user.otp,
-      lastUpdated: user.updated_at,
     });
+
     if (!isValidOtp) throw new AuthError('Invalid otp');
 
     await UserRepository.updateOne({

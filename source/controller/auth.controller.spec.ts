@@ -39,7 +39,6 @@ const [
   phone,
   otp,
   hashedPassword,
-  lastUpdated,
   accessToken,
   user_id,
 ] = [
@@ -50,7 +49,6 @@ const [
   '<phone>',
   '<otp>',
   '<hashedPassword>',
-  '<lastUpdated>',
   '<accessToken>',
   1,
 ];
@@ -141,7 +139,6 @@ describe('AuthController', () => {
     it("verifies the user's email", async () => {
       const findOneByResult = {
         otp,
-        updated_at: lastUpdated,
       };
 
       mock(UserRepository.findOneBy).mockResolvedValue(findOneByResult);
@@ -157,7 +154,6 @@ describe('AuthController', () => {
       expect(Helper.isValidOtp).toHaveBeenLastCalledWith({
         inputOtp: otp,
         generatedOtp: otp,
-        lastUpdated,
       });
 
       expect(UserRepository.updateOne).toHaveBeenLastCalledWith({

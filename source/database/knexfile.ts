@@ -16,6 +16,7 @@ const configs: { [key: string]: Knex.Config } = {
       port: Number(DB_PORT),
       user: DB_USER,
       password: DB_PASS,
+      ssl: true,
 
       database: DB_NAME,
       typeCast: function (field: any, next: any) {

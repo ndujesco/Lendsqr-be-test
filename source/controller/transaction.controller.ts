@@ -70,7 +70,7 @@ export class TransactionController {
     };
 
     const [transaction_id] = await TransactionRepository.create(transactionInfo);
-    const paymentId = transaction_id;
+    const payment_id = transaction_id;
 
     const checkoutUrl = await PaymentService.initializeTopUp({
       amount,
@@ -80,7 +80,7 @@ export class TransactionController {
     return res.json({
       message: 'Transaction Initiated',
       success: true,
-      data: { paymentId, checkoutUrl },
+      data: { payment_id, checkoutUrl },
     });
   }
 
@@ -102,7 +102,7 @@ export class TransactionController {
     };
 
     const [transaction_id] = await TransactionRepository.create(transactionInfo);
-    const paymentId = transaction_id;
+    const payment_id = transaction_id;
 
     const checkoutUrl = await PaymentService.initializeWithdrawal({
       amount,
@@ -112,15 +112,15 @@ export class TransactionController {
     return res.json({
       message: 'Transaction Initiated',
       success: true,
-      data: { paymentId, checkoutUrl },
+      data: { payment_id, checkoutUrl },
     });
   }
 
   static async verify({ body, user }: AuthRequest, res: Response) {
-    const { paymentId } = body;
+    const { payment_id } = body;
     const { user_id: owner } = user;
 
-    const verifiedData = await PaymentService.verifyTransaction(paymentId);
+    const verifiedData = await PaymentService.verifyTransaction(payment_id);
 
     const { success, transaction_id } = verifiedData;
     if (!success) throw new BadRequestError('Invalid payment id');

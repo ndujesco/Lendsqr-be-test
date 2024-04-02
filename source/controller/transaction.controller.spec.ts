@@ -144,7 +144,7 @@ describe('TransactionController', () => {
       });
 
       expect(response.json).toHaveBeenCalledTimes(1);
-      expect(data).toStrictEqual({ paymentId: transaction_id, checkoutUrl });
+      expect(data).toStrictEqual({ payment_id: transaction_id, checkoutUrl });
     });
 
     it('throws NotFoundError if user is not found', async () => {
@@ -185,7 +185,7 @@ describe('TransactionController', () => {
       });
 
       expect(response.json).toHaveBeenCalledTimes(1);
-      expect(data).toStrictEqual({ paymentId: transaction_id, checkoutUrl });
+      expect(data).toStrictEqual({ payment_id: transaction_id, checkoutUrl });
     });
 
     it('throws NotFoundError if user is not found', async () => {
@@ -203,7 +203,7 @@ describe('TransactionController', () => {
 
   describe('verify', () => {
     const request = {
-      body: { paymentId: transaction_id },
+      body: { payment_id: transaction_id },
       user: { user_id },
     } as AuthRequest;
 
@@ -211,7 +211,7 @@ describe('TransactionController', () => {
       await TransactionController.verify(request, response);
 
     it('verifies that the transaction weas successful', async () => {
-      const { paymentId } = request.body;
+      const { payment_id } = request.body;
       const wallet = { balance };
 
       mock(PaymentService.verifyTransaction).mockResolvedValue({
@@ -232,7 +232,7 @@ describe('TransactionController', () => {
       const data = await verify();
 
       expect(PaymentService.verifyTransaction).toHaveBeenLastCalledWith(
-        paymentId
+        payment_id
       );
       expect(TransactionRepository.findOneBy).toHaveBeenLastCalledWith({
         transaction_id,

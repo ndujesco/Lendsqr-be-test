@@ -22,5 +22,5 @@ export class InitiateTransactionDto {
 export class VerifyTransactionDto {
   @IsNotEmpty()
   @IsNumber()
-  paymentId: number;
+  payment_id: number;
 }

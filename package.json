@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
     "test": "jest",
     "start": "ts-node source/index.ts",
+    "start:prod": "NODE_ENV=production node ./dist/index.js",
     "start:dev": "clear &&  NODE_ENV=development nodemon source/index.ts",
     "migrate:latest:dev": "NODE_ENV=development knex --knexfile source/database/knexfile.ts migrate:latest",
     "migrate:latest:prod": "NODE_ENV=production knex --knexfile source/database/knexfile.ts migrate:latest"

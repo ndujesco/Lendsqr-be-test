@@ -11,14 +11,14 @@ export async function up(knex: Knex): Promise<void> {
       table.boolean('is_verified').defaultTo(false).notNullable();
       table.string('otp').notNullable();
       table.string('phone').notNullable();
-      table.timestamps(true, true).notNullable();
+      table.timestamps(true, true);
     })
 
     .createTable('wallet', (table) => {
       table.increments('wallet_id').primary().notNullable();
       table.float('balance').defaultTo(0).notNullable();
       table.string('wallet_number').unique().notNullable();
-      table.timestamps(true, true).notNullable();
+      table.timestamps(true, true);
 
       table
         .integer('owner')
@@ -41,14 +41,12 @@ export async function up(knex: Knex): Promise<void> {
       table.float('receiver_balance').nullable(); // these fields will not be returned to user instead a 'walletBalance' field will be returned which will be either sender_balance or receiver_balance
       table.boolean('is_successful').defaultTo(false).notNullable();
       table.string('remark').nullable();
-      table.timestamps(true, true).notNullable();
-
+      table.timestamps(true, true);
       table
         .integer('sender')
         .unsigned()
         .references('user_id')
         .inTable('user')
-        .onDelete('CASCADE')
         .nullable();
 
       table
@@ -56,7 +54,6 @@ export async function up(knex: Knex): Promise<void> {
         .unsigned()
         .references('user_id')
         .inTable('user')
-        .onDelete('CASCADE')
         .nullable();
     });
 }

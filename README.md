@@ -347,8 +347,9 @@ yarn start:dev
 <summary><code>UserContoller</code> </summary>
 
 #####
+<img width="874" alt="USER TEST" src="https://github.com/ndujesco/lendsqr-be-test/assets/92054718/df15112e-a12f-4aca-8a81-b5b73270fa86">
 
-<img width="889" alt="USER TEST" src="https://github.com/ndujesco/lendsqr-be-test/assets/92054718/c8642e46-265b-4917-a7d6-83c92852f4f7">
+
 
 </details>
 

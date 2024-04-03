@@ -272,8 +272,8 @@ describe('UserController', () => {
       expect(data).toStrictEqual({ user: '<foundUser>' });
     });
 
-    it('throws NotFoundError if wallet number does not exist', async () => {
-      mock(UserRepository.findProfilesBy).mockResolvedValueOnce(false);
+    it('throws NotFoundError if user does not exist', async () => {
+      mock(UserRepository.findProfilesBy).mockResolvedValueOnce([]);
 
       expect(getUserFromId()).rejects.toThrow(NotFoundError);
     });

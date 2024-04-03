@@ -129,7 +129,7 @@ export class UserController {
     const user_id = Number(query.user_id) || 0;
     const user = await UserRepository.findProfilesBy('user_id', user_id);
 
-    if (!user) throw new NotFoundError('User not found');
+    if (!user.length) throw new NotFoundError('User not found');
 
     return res.json({
       message: 'Successful',

@@ -98,11 +98,11 @@ export class UserController {
     const { user_id: loggedUser } = user;
     const otherUser = Number(query.user_id) || 0;
 
-    const transactions = await TransactionRepository.findCommonTransactions(
+    let transactions = await TransactionRepository.findCommonTransactions(
       loggedUser,
       otherUser
     );
-
+    transactions = Helper.removeTransactionFields(transactions, loggedUser);
     return res.json({
       message: 'Successful',
       success: true,

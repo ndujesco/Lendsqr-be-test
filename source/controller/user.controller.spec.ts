@@ -200,14 +200,23 @@ describe('UserController', () => {
         '<commonTransactions>'
       );
 
+      mock(Helper.removeTransactionFields).mockReturnValueOnce(
+        '<removedFields>'
+      );
+
       const data = await getCommonTransactions();
 
       expect(
         TransactionRepository.findCommonTransactions
       ).toHaveBeenLastCalledWith(loggedUserId, otherUserId);
 
+      expect(Helper.removeTransactionFields).toHaveBeenLastCalledWith(
+        '<commonTransactions>',
+        loggedUserId
+      );
+
       expect(response.json).toHaveBeenCalledTimes(1);
-      expect(data).toStrictEqual({ transactions: '<commonTransactions>' });
+      expect(data).toStrictEqual({ transactions: '<removedFields>' });
     });
   });
 

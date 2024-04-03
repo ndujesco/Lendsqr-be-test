@@ -9,9 +9,9 @@
 ## FEATURES
 
 - `A user can create an account`
-- `A user can fund their account`
+- A user can fund their account
 - `A user can transfer funds to another user’s account`
-- `A user can withdraw funds from their account.`
+- A user can withdraw funds from their account.
 - `A user with records in the Lendsqr Adjutor Karma blacklist cannot be onboarded`
 
 ## TECH STACK

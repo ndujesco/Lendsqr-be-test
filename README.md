@@ -141,7 +141,7 @@
 
 `Authentication Required`
 
-| key | value    | required  | parameter type |
+| key | value    | required  | parameter type |        |
 | :-- | :------- | :-------- | :------------- | ------ |
 | >   | `amount` | `integer` | `true`         | `body` |
 
@@ -175,6 +175,7 @@
 
 <details>
   <summary><code>GET</code> <code><b>/user/wallet</b></code> <code>(returns the user's wallet info)</code></summary>
+
 ###
 
 `Authentication Required`
@@ -207,6 +208,7 @@
 
 <details>
   <summary><code>GET</code> <code><b>/user/transaction/common</b></code> <code>(returns transactions logged in user has in common with specified user)</code></summary>
+
 ###
 
 `Authentication Required`

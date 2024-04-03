@@ -39,7 +39,7 @@ const [
   phone,
   otp,
   hashedPassword,
-  accessToken,
+  access_token,
   user_id,
 ] = [
   '<first_name>',
@@ -49,7 +49,7 @@ const [
   '<phone>',
   '<otp>',
   '<hashedPassword>',
-  '<accessToken>',
+  '<access_token>',
   1,
 ];
 
@@ -144,7 +144,7 @@ describe('AuthController', () => {
       mock(UserRepository.findOneBy).mockResolvedValue(findOneByResult);
 
       mock(Helper.isValidOtp).mockReturnValue(true);
-      mock(createJWT).mockReturnValue(accessToken);
+      mock(createJWT).mockReturnValue(access_token);
 
       mock(Helper.omitUserInfo).mockReturnValue('<omitUserInfoResult>');
 
@@ -162,7 +162,7 @@ describe('AuthController', () => {
       });
       expect(Helper.omitUserInfo).toHaveBeenLastCalledWith({
         ...findOneByResult,
-        accessToken,
+        access_token,
       });
 
       expect(response.json).toHaveBeenCalledTimes(1);
@@ -247,7 +247,7 @@ describe('AuthController', () => {
 
     const signIn = async () => await AuthController.signIn(request, response);
 
-    it('signs in the user and returns an accessToken if they are verified', async () => {
+    it('signs in the user and returns an access_token if they are verified', async () => {
       const findOneByResult = {
         password,
         is_verified: true,
@@ -255,7 +255,7 @@ describe('AuthController', () => {
 
       mock(UserRepository.findOneBy).mockResolvedValue(findOneByResult);
       mock(comparePassword).mockResolvedValue(true);
-      mock(createJWT).mockReturnValue(accessToken);
+      mock(createJWT).mockReturnValue(access_token);
       mock(Helper.omitUserInfo).mockReturnValue('<omitUserInfoResult>');
 
       const data = await signIn();
@@ -265,14 +265,14 @@ describe('AuthController', () => {
 
       expect(Helper.omitUserInfo).toHaveBeenLastCalledWith({
         ...findOneByResult,
-        accessToken,
+        access_token,
       });
 
       expect(response.json).toHaveBeenCalledTimes(1);
       expect(data).toStrictEqual('<omitUserInfoResult>');
     });
 
-    it('does not return accessToken if they are not found', async () => {
+    it('does not return access_token if they are not found', async () => {
       const findOneByResult = {
         password,
         is_verified: false,
@@ -283,7 +283,7 @@ describe('AuthController', () => {
 
       expect(Helper.omitUserInfo).toHaveBeenCalledWith({
         ...findOneByResult,
-        accessToken: undefined,
+        access_token: undefined,
       });
     });
 

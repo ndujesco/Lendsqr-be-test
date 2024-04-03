@@ -76,10 +76,10 @@ export class AuthController {
       update: { is_verified: true },
     });
 
-    const accessToken = createJWT(user);
+    const access_token = createJWT(user);
 
     user.is_verified = true; // for the response
-    const data = Helper.omitUserInfo({ ...user, accessToken });
+    const data = Helper.omitUserInfo({ ...user, access_token });
 
     return res.json({
       message: 'Email verified!',
@@ -128,7 +128,7 @@ export class AuthController {
   }
 
   static async signIn({ body }: Request, res: Response) {
-    let accessToken;
+    let access_token;
     const { email, password } = body as SignInDto;
 
     const user = await UserRepository.findOneBy({ email });
@@ -138,10 +138,10 @@ export class AuthController {
     if (!passwordMatches) throw new NotFoundError('Invalid email or password.');
 
     if (user.is_verified) {
-      accessToken = createJWT(user);
+      access_token = createJWT(user);
     }
 
-    const data = Helper.omitUserInfo({ ...user, accessToken });
+    const data = Helper.omitUserInfo({ ...user, access_token });
 
     return res.json({
       message: 'Sign in successful!',

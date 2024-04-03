@@ -322,3 +322,46 @@ yarn start:dev
 ```
 
 </details>
+
+
+# TESTS
+
+<details>
+<summary><code>AuthController</code> </summary>
+
+<img width="639" alt="AUTH TEST" src="https://github.com/ndujesco/lendsqr-be-test/assets/92054718/f5c83d43-8f90-4fb8-9618-d60f5fc8a754">
+
+
+</details>
+
+<details>
+<summary><code>TransactionController</code> </summary>
+
+<img width="688" alt="TRANSACTION TEST" src="https://github.com/ndujesco/lendsqr-be-test/assets/92054718/9ce6f94f-6921-443a-9895-f93626162155">
+
+
+
+</details>
+
+<details>
+<summary><code>UserContoller</code> </summary>
+
+<img width="889" alt="USER TEST" src="https://github.com/ndujesco/lendsqr-be-test/assets/92054718/c8642e46-265b-4917-a7d6-83c92852f4f7">
+
+
+</details>
+
+<details>
+<summary><code>JWT</code> </summary>
+
+<img width="528" alt="JWT TEST" src="https://github.com/ndujesco/lendsqr-be-test/assets/92054718/381f8c39-76c6-4e26-99e4-90de4f8d0023">
+
+</details>
+
+<details>
+<summary><code>ALL</code> </summary>
+<img width="490" alt="ALL TESTS" src="https://github.com/ndujesco/lendsqr-be-test/assets/92054718/0f953908-8081-4f42-a83d-4f3010116320">
+
+
+
+</details>

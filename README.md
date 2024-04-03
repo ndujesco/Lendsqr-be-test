@@ -37,7 +37,6 @@
 
 ![DATABASE_DESIGN](https://github.com/ndujesco/lendsqr-be-test/assets/92054718/17e7bbd7-414a-4585-a14e-a943e8db43ba)
 
-
 # ENDPOINTS
 
 #### AUTHORIZATION REQUESTS
@@ -47,13 +46,13 @@
 
 ###
 
-> | key          | value    | required | parameter type |
-> | :----------- | :------- | :------- | :------------- |
-> | `email`      | `string` | `true`   | `body`         |
-> | `password`   | `string` | `true`   | `body`         |
-> | `phone`      | `string` | `true`   | `body`         |
-> | `first_name` | `string` | `true`   | `body`         |
-> | `last_name`  | `string` | `true`   | `body`         |
+| key          | value    | required | parameter type |
+| :----------- | :------- | :------- | :------------- |
+| `email`      | `string` | `true`   | `body`         |
+| `password`   | `string` | `true`   | `body`         |
+| `phone`      | `string` | `true`   | `body`         |
+| `first_name` | `string` | `true`   | `body`         |
+| `last_name`  | `string` | `true`   | `body`         |
 
 </details>
 
@@ -348,9 +347,8 @@ yarn start:dev
 <summary><code>UserContoller</code> </summary>
 
 #####
+
 <img width="874" alt="USER TEST" src="https://github.com/ndujesco/lendsqr-be-test/assets/92054718/df15112e-a12f-4aca-8a81-b5b73270fa86">
-
-
 
 </details>
 
@@ -367,8 +365,7 @@ yarn start:dev
 <summary><code>ALL</code> </summary>
 
 #####
+
 <img width="444" alt="ALL TESTS" src="https://github.com/ndujesco/lendsqr-be-test/assets/92054718/b12b33ed-10ca-4db2-92dc-38f8592faab1">
-
-
 
 </details>

@@ -45,7 +45,7 @@
 <details>
  <summary><code>POST</code> <code><b>/auth/signup</b></code> <code>(creates a user and a wallet)</code></summary>
 
-##### Parameters
+###
 
 > | key          | value    | required | parameter type |
 > | :----------- | :------- | :------- | :------------- |

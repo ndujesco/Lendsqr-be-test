@@ -95,9 +95,7 @@
 <details>
  <summary><code>POST</code> <code><b>/auth/password</b></code> <code>(verifies user's password.)</code></summary>
 
-###
-
-`Authentication Required`
+### `Authentication Required`
 | key | value | required | parameter type |
 | :--------- | :------- | :------- | :------------- |
 | `password` | `string` | `true` | `body` |
@@ -111,9 +109,7 @@
 <details>
  <summary><code>POST</code> <code><b>/transaction/transfer</b></code> <code>(funds another user's account and is debited accordingly)</code></summary>
 
-###
-
-`Authentication Required`
+### `Authentication Required`
 | key | value | required | parameter type |
 | :------------ | :-------- | :------- | :------------- |
 | `receiver_id` | `integer` | `true` | `body` |
@@ -125,9 +121,7 @@
 <details>
  <summary><code>POST</code> <code><b>/transaction/withdraw</b></code> <code>(initiates the withdrawal transaction)</code></summary>
 
-###
-
-`Authentication Required`
+### `Authentication Required`
 | key | value | required | parameter type |
 | :------- | :-------- | :------- | :------------- |
 | `amount` | `integer` | `true` | `body` |
@@ -137,9 +131,7 @@
 <details>
   <summary><code>POST</code> <code><b>/transaction/topup</b></code> <code>(initiates topup transaction)</code></summary>
 
-###
-
-`Authentication Required`
+### `Authentication Required`
 
 | key      | value     | required | parameter type |
 | :------- | :-------- | :------- | :------------- |
@@ -150,9 +142,7 @@
 <details>
   <summary><code>POST</code> <code><b>/transaction/verify</b></code> <code>(verifies the withdrawal or topup transaction and completes it)</code></summary>
 
-###
-
-`Authentication Required`
+### `Authentication Required`
 | key | value | required | parameter type |
 | :----------- | :-------- | :------- | :------------- |
 
@@ -167,27 +157,21 @@
 <details>
   <summary><code>GET</code> <code><b>/user/my/profile</b></code> <code>(gets the logged in user's profile)</code></summary>
 
-###
-
-`Authentication Required`
+### `Authentication Required`
 
 </details>
 
 <details>
   <summary><code>GET</code> <code><b>/user/wallet</b></code> <code>(returns the user's wallet info)</code></summary>
 
-###
-
-`Authentication Required`
+### `Authentication Required`
 
 </details>
 
 <details>
   <summary><code>GET</code> <code><b>/user/transaction/type</b></code> <code>(returns the user's transactions according to the specified type)</code></summary>
 
-###
-
-`Authentication Required`
+### `Authentication Required`
 | key | value | required | parameter type |
 | :----------------- | :---------------------------------- | :------- | :------------- |
 | `transaction_type` | `enum('topup withdrawal transfer')` | `false` | `query` |
@@ -208,9 +192,7 @@
 <details>
   <summary><code>GET</code> <code><b>/user/transaction/common</b></code> <code>(returns transactions logged in user has in common with specified user)</code></summary>
 
-###
-
-`Authentication Required`
+### `Authentication Required`
 | key | value | required | parameter type |
 | :-------- | :-------- | :------- | :------------- |
 | `user_id` | `integer` | `true` | `query` |
@@ -220,9 +202,7 @@
 <details>
   <summary><code>GET</code> <code><b>/user/profile/wallet</b></code> <code>(returns a user's profile from their wallet number)</code></summary>
 
-###
-
-`Authentication Required`
+### `Authentication Required`
 | key | value | required | parameter type |
 | :-------------- | :-------- | :------- | :------------- |
 | `wallet_number` | `integer` | `true` | `query` |
@@ -232,9 +212,7 @@
 <details>
   <summary><code>GET</code> <code><b>/user/profile/id</b></code> <code>(returns a user's profile from ID)</code></summary>
 
-###
-
-`Authentication Required`
+### `Authentication Required`
 | key | value | required | parameter type |
 | :-------- | :-------- | :------- | :------------- |
 | `user_id` | `integer` | `true` | `query` |
@@ -244,9 +222,7 @@
 <details>
   <summary><code>GET</code> <code><b>/user/profile/by</b></code> <code>(returns users profile that match the key-value)</code></summary>
 
-###
-
-`Authentication Required`
+### `Authentication Required`
 | key | value | required | parameter type |
 | :------ | :------- | :------- | :------------- |
 | `key` | `string` | `true` | `query` |

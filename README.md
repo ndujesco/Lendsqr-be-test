@@ -23,9 +23,9 @@
 
 ## LINKS
 
-- [`POSTMAN DOCUMENTATION`](https://documenter.getpostman.com/view/20990487/2sA35JzKQ2)
-- [`LIVE BASE URL`](https://ugochukwu-ndujekwu-lendsqr-be-test.onrender.com/api/v1)
-- [`DATABASE DESIGN`](https://dbdesigner.page.link/pt4ZVXxSuPuaB9pB9)
+- [POSTMAN DOCUMENTATION](https://documenter.getpostman.com/view/20990487/2sA35JzKQ2)
+- [LIVE BASE URL](https://ugochukwu-ndujekwu-lendsqr-be-test.onrender.com/api/v1)
+- [DATABASE DESIGN](https://dbdesigner.page.link/pt4ZVXxSuPuaB9pB9)
 
 ## DATABASE
 

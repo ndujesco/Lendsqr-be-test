@@ -28,6 +28,7 @@
 - [POSTMAN DOCUMENTATION](https://documenter.getpostman.com/view/20990487/2sA35JzKQ2)
 - [LIVE BASE_URL](https://ugochukwu-ndujekwu-lendsqr-be-test.onrender.com/api/v1)
 - [DATABASE DESIGN](https://dbdesigner.page.link/pt4ZVXxSuPuaB9pB9)
+- [GOOGLE DOC REVIEW](https://docs.google.com/document/d/1FHOJ1P3C9fTDzxfzrEATL2MrpjiG5pJMFDxu7J47GZs/edit?usp=sharing)
 
 ## DATABASE
 

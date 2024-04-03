@@ -111,14 +111,14 @@
 <details>
  <summary><code>POST</code> <code><b>/transaction/transfer</b></code> <code>(funds another user's account and is debited accordingly)</code></summary>
 
-##### Parameters
+###
 
-> `Authentication Required`
-> | key | value | required | parameter type |
-> | :------------ | :-------- | :------- | :------------- |
-> | `receiver_id` | `integer` | `true` | `body` |
-> | `amount` | `integer` | `true` | `body` |
-> | `remark` | `text` | `true` | `body` |
+`Authentication Required`
+| key | value | required | parameter type |
+| :------------ | :-------- | :------- | :------------- |
+| `receiver_id` | `integer` | `true` | `body` |
+| `amount` | `integer` | `true` | `body` |
+| `remark` | `text` | `true` | `body` |
 
 </details>
 

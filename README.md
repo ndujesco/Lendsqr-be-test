@@ -13,7 +13,7 @@
 - A user can transfer funds to another user’s account.
 - A user can withdraw funds from their account.
 - A user with records in the Lendsqr Adjutor Karma blacklist cannot be onboarded.
-- A user can view their transaction history.
+- A user can view their transactions history.
 - A user can view other user's profile.
 
 ## TECH STACK

@@ -141,9 +141,9 @@
 
 `Authentication Required`
 
-| key | value    | required  | parameter type |        |
-| :-- | :------- | :-------- | :------------- | ------ |
-| >   | `amount` | `integer` | `true`         | `body` |
+| key      | value     | required | parameter type |
+| :------- | :-------- | :------- | :------------- |
+| `amount` | `integer` | `true`   | `body`         |
 
 </details>
 

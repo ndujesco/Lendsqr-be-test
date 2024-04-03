@@ -37,6 +37,124 @@
 
 ![DATABASE_DESIGN](https://github.com/ndujesco/lendsqr-be-test/assets/92054718/17e7bbd7-414a-4585-a14e-a943e8db43ba)
 
+
+# PROJECT SETUP
+
+<details>
+<summary><code>CLONE THE REPO</code> </summary>
+
+######
+
+```bash
+git clone https://github.com/ndujesco/lendsqr-be-test.git
+```
+
+</details>
+
+<details>
+<summary><code>INSTALL DEPENDENCIES</code> </summary>
+
+######
+
+```bash
+yarn install
+```
+
+</details>
+
+<details>
+<summary><code>CREATE A DATABASE</code> </summary>
+
+######
+
+```mysql
+CREATE DATABASE lendsqr;
+```
+
+</details>
+
+<details>
+<summary><code>CREATE A .env.development file</code> </summary>
+
+######
+
+- Create in the root directory
+- Check `.env.example` for the variables
+- `.env` will not work appropriately
+- `.env.production` should be used for production
+
+</details>
+
+<details>
+<summary><code>RUN MIGRATIONS</code> </summary>
+
+######
+
+```bash
+yarn migrate:latest:dev
+```
+
+</details>
+
+<details>
+<summary><code>START SERVER</code> </summary>
+
+######
+
+```bash
+yarn start:dev
+```
+
+</details>
+
+# TESTS
+
+<details>
+<summary><code>AuthController</code> </summary>
+
+#####
+
+<img width="632" alt="AUTH TEST" src="https://github.com/ndujesco/lendsqr-be-test/assets/92054718/08eebef9-81e4-4a6f-a8cc-9a23276763b4">
+
+
+</details>
+
+<details>
+<summary><code>TransactionController</code> </summary>
+
+#####
+
+<img width="688" alt="TRANSACTION TEST" src="https://github.com/ndujesco/lendsqr-be-test/assets/92054718/9ce6f94f-6921-443a-9895-f93626162155">
+
+</details>
+
+<details>
+<summary><code>UserContoller</code> </summary>
+
+#####
+
+<img width="874" alt="USER TEST" src="https://github.com/ndujesco/lendsqr-be-test/assets/92054718/df15112e-a12f-4aca-8a81-b5b73270fa86">
+
+</details>
+
+<details>
+<summary><code>JWT</code> </summary>
+
+#####
+
+<img width="528" alt="JWT TEST" src="https://github.com/ndujesco/lendsqr-be-test/assets/92054718/381f8c39-76c6-4e26-99e4-90de4f8d0023">
+
+</details>
+
+<details>
+<summary><code>ALL</code> </summary>
+
+#####
+
+<img width="444" alt="ALL TESTS" src="https://github.com/ndujesco/lendsqr-be-test/assets/92054718/b12b33ed-10ca-4db2-92dc-38f8592faab1">
+
+</details>
+
 # ENDPOINTS
 
 #### AUTHORIZATION REQUESTS
@@ -258,120 +376,3 @@
 </details>
 
 ---
-
-# PROJECT SETUP
-
-<details>
-<summary><code>CLONE THE REPO</code> </summary>
-
-######
-
-```bash
-git clone https://github.com/ndujesco/lendsqr-be-test.git
-```
-
-</details>
-
-<details>
-<summary><code>INSTALL DEPENDENCIES</code> </summary>
-
-######
-
-```bash
-yarn install
-```
-
-</details>
-
-<details>
-<summary><code>CREATE A DATABASE</code> </summary>
-
-######
-
-```mysql
-CREATE DATABASE lendsqr;
-```
-
-</details>
-
-<details>
-<summary><code>CREATE A .env.development file</code> </summary>
-
-######
-
-- Create in the root directory
-- Check `.env.example` for the variables
-- `.env` will not work appropriately
-- `.env.production` should be used for production
-
-</details>
-
-<details>
-<summary><code>RUN MIGRATIONS</code> </summary>
-
-######
-
-```bash
-yarn migrate:latest:dev
-```
-
-</details>
-
-<details>
-<summary><code>START SERVER</code> </summary>
-
-######
-
-```bash
-yarn start:dev
-```
-
-</details>
-
-# TESTS
-
-<details>
-<summary><code>AuthController</code> </summary>
-
-#####
-
-<img width="632" alt="AUTH TEST" src="https://github.com/ndujesco/lendsqr-be-test/assets/92054718/08eebef9-81e4-4a6f-a8cc-9a23276763b4">
-
-
-</details>
-
-<details>
-<summary><code>TransactionController</code> </summary>
-
-#####
-
-<img width="688" alt="TRANSACTION TEST" src="https://github.com/ndujesco/lendsqr-be-test/assets/92054718/9ce6f94f-6921-443a-9895-f93626162155">
-
-</details>
-
-<details>
-<summary><code>UserContoller</code> </summary>
-
-#####
-
-<img width="874" alt="USER TEST" src="https://github.com/ndujesco/lendsqr-be-test/assets/92054718/df15112e-a12f-4aca-8a81-b5b73270fa86">
-
-</details>
-
-<details>
-<summary><code>JWT</code> </summary>
-
-#####
-
-<img width="528" alt="JWT TEST" src="https://github.com/ndujesco/lendsqr-be-test/assets/92054718/381f8c39-76c6-4e26-99e4-90de4f8d0023">
-
-</details>
-
-<details>
-<summary><code>ALL</code> </summary>
-
-#####
-
-<img width="444" alt="ALL TESTS" src="https://github.com/ndujesco/lendsqr-be-test/assets/92054718/b12b33ed-10ca-4db2-92dc-38f8592faab1">
-
-</details>

@@ -35,7 +35,8 @@
 - `Wallet`
 - `Transaction`
 
-![DATABASE_DESIGN](https://github.com/ndujesco/PRACTICE_README_DOC/assets/92054718/f94821eb-b73d-4470-960c-7fb237e353df)
+![DATABASE_DESIGN](https://github.com/ndujesco/lendsqr-be-test/assets/92054718/17e7bbd7-414a-4585-a14e-a943e8db43ba)
+
 
 # ENDPOINTS
 

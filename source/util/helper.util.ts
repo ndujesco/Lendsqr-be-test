@@ -21,7 +21,7 @@ export class Helper {
         <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">DEMO CREDIT.</a>
       </div>
       <p style="font-size:1.1em">Hi, ${name}.</p>
-      <p>Thank you for choosing Demo Credit. Here is your OTP, which expires in 30 minutes:</p>
+      <p>Thank you for choosing Demo Credit. Here is your OTP:</p>
       <h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;"> ${otp}</h2>
       <p style="font-size:0.9em;">Regards, <br />Demo Credit. </p>
       <hr style="border:none;border-top:1px solid #eee" />

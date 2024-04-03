@@ -57,18 +57,6 @@
 </details>
 
 <details>
- <summary><code>POST</code> <code><b>/auth/update/email</b></code> <code>(updates a user's email)</code></summary>
-
-##### Parameters
-
-> | key       | value    | required | parameter type |
-> | :-------- | :------- | :------- | :------------- |
-> | `email`   | `string` | `true`   | `body`         |
-> | `user_id` | `string` | `true`   | `body`         |
-
-</details>
-
-<details>
  <summary><code>POST</code> <code><b>/auth/verification/email</b></code> <code>(verifies a user's email)</code></summary>
 
 ##### Parameters
@@ -89,6 +77,18 @@
 > | :--------- | :------- | :------- | :------------- |
 > | `email`    | `string` | `true`   | `body`         |
 > | `password` | `string` | `true`   | `body`         |
+
+</details>
+
+<details>
+ <summary><code>POST</code> <code><b>/auth/update/email</b></code> <code>(updates a user's email)</code></summary>
+
+##### Parameters
+
+> | key       | value    | required | parameter type |
+> | :-------- | :------- | :------- | :------------- |
+> | `email`   | `string` | `true`   | `body`         |
+> | `user_id` | `string` | `true`   | `body`         |
 
 </details>
 

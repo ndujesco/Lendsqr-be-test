@@ -116,7 +116,7 @@ describe('AuthController', () => {
       expect(data).toStrictEqual(undefined);
     });
 
-    it('throws a BadRequest Error is user already exists', async () => {
+    it('throws BadRequest Error is user already exists', async () => {
       mock(UserRepository.checkEmailOrPhone).mockResolvedValue(true);
 
       expect(signUp()).rejects.toThrow(BadRequestError);

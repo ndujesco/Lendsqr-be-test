@@ -23,10 +23,22 @@ authRouter.post(
   AuthController.signUp
 );
 
+authRouter.patch(
+  '/verification/email',
+  RequestValidator.validate(VerifyEmailDto, 'query'),
+  AuthController.verifyEmail
+);
+
 authRouter.post(
   '/signIn',
   RequestValidator.validate(SignInDto, 'body'),
   AuthController.signIn
+);
+
+authRouter.put(
+  '/update/email',
+  RequestValidator.validate(UpdateEmailDto, 'body'),
+  AuthController.updateEmail
 );
 
 /**
@@ -38,18 +50,6 @@ authRouter.post(
   protect,
   RequestValidator.validate(VerifyPasswordDto, 'body'),
   AuthController.verifyPassword
-);
-
-authRouter.patch(
-  '/verification/email',
-  RequestValidator.validate(VerifyEmailDto, 'query'),
-  AuthController.verifyEmail
-);
-
-authRouter.put(
-  '/update/email',
-  RequestValidator.validate(UpdateEmailDto, 'body'),
-  AuthController.updateEmail
 );
 
 export default authRouter;

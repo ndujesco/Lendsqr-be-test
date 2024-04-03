@@ -59,48 +59,48 @@
 <details>
  <summary><code>POST</code> <code><b>/auth/verification/email</b></code> <code>(verifies a user's email)</code></summary>
 
-##### Parameters
+###
 
-> | key     | value    | required | parameter type |
-> | :------ | :------- | :------- | :------------- |
-> | `email` | `string` | `true`   | `query`        |
-> | `otp`   | `string` | `true`   | `query`        |
+| key     | value    | required | parameter type |
+| :------ | :------- | :------- | :------------- |
+| `email` | `string` | `true`   | `query`        |
+| `otp`   | `string` | `true`   | `query`        |
 
 </details>
 
 <details>
  <summary><code>POST</code> <code><b>/auth/signin</b></code> <code>(signs in user if email is verified)</code></summary>
 
-##### Parameters
+###
 
-> | key        | value    | required | parameter type |
-> | :--------- | :------- | :------- | :------------- |
-> | `email`    | `string` | `true`   | `body`         |
-> | `password` | `string` | `true`   | `body`         |
+| key        | value    | required | parameter type |
+| :--------- | :------- | :------- | :------------- |
+| `email`    | `string` | `true`   | `body`         |
+| `password` | `string` | `true`   | `body`         |
 
 </details>
 
 <details>
  <summary><code>POST</code> <code><b>/auth/update/email</b></code> <code>(updates a user's email)</code></summary>
 
-##### Parameters
+###
 
-> | key       | value    | required | parameter type |
-> | :-------- | :------- | :------- | :------------- |
-> | `email`   | `string` | `true`   | `body`         |
-> | `user_id` | `string` | `true`   | `body`         |
+| key       | value    | required | parameter type |
+| :-------- | :------- | :------- | :------------- |
+| `email`   | `string` | `true`   | `body`         |
+| `user_id` | `string` | `true`   | `body`         |
 
 </details>
 
 <details>
  <summary><code>POST</code> <code><b>/auth/password</b></code> <code>(verifies user's password.)</code></summary>
 
-##### Parameters
+###
 
-> `Authentication Required`
-> | key | value | required | parameter type |
-> | :--------- | :------- | :------- | :------------- |
-> | `password` | `string` | `true` | `body` |
+`Authentication Required`
+| key | value | required | parameter type |
+| :--------- | :------- | :------- | :------------- |
+| `password` | `string` | `true` | `body` |
 
 </details>
 
@@ -125,34 +125,37 @@
 <details>
  <summary><code>POST</code> <code><b>/transaction/withdraw</b></code> <code>(initiates the withdrawal transaction)</code></summary>
 
-##### Parameters
+###
 
-> `Authentication Required`
-> | key | value | required | parameter type |
-> | :------- | :-------- | :------- | :------------- |
-> | `amount` | `integer` | `true` | `body` |
+`Authentication Required`
+| key | value | required | parameter type |
+| :------- | :-------- | :------- | :------------- |
+| `amount` | `integer` | `true` | `body` |
 
 </details>
 
 <details>
   <summary><code>POST</code> <code><b>/transaction/topup</b></code> <code>(initiates topup transaction)</code></summary>
 
-##### Parameters
+###
 
-> | key      | value     | required | parameter type |
-> | :------- | :-------- | :------- | :------------- |
-> | `amount` | `integer` | `true`   | `body`         |
+`Authentication Required`
+
+| key | value    | required  | parameter type |
+| :-- | :------- | :-------- | :------------- | ------ |
+| >   | `amount` | `integer` | `true`         | `body` |
 
 </details>
 
 <details>
   <summary><code>POST</code> <code><b>/transaction/verify</b></code> <code>(verifies the withdrawal or topup transaction and completes it)</code></summary>
 
-##### Parameters
+###
 
-> `Authentication Required`
-> | key | value | required | parameter type |
-> | :----------- | :-------- | :------- | :------------- |
+`Authentication Required`
+| key | value | required | parameter type |
+| :----------- | :-------- | :------- | :------------- |
+
 > | `payment_id` | `integer` | `true` | `body` |
 
 </details>
@@ -164,91 +167,89 @@
 <details>
   <summary><code>GET</code> <code><b>/user/my/profile</b></code> <code>(gets the logged in user's profile)</code></summary>
 
-##### Parameters
+###
 
-> `Authentication Required` > `No parameters`
+`Authentication Required`
 
 </details>
 
 <details>
   <summary><code>GET</code> <code><b>/user/wallet</b></code> <code>(returns the user's wallet info)</code></summary>
+###
 
-##### Parameters
-
-> `Authentication Required` > `No parameters`
+`Authentication Required`
 
 </details>
 
 <details>
   <summary><code>GET</code> <code><b>/user/transaction/type</b></code> <code>(returns the user's transactions according to the specified type)</code></summary>
 
-##### Parameters
+###
 
-> `Authentication Required`
-> | key | value | required | parameter type |
-> | :----------------- | :---------------------------------- | :------- | :------------- |
-> | `transaction_type` | `enum('topup withdrawal transfer')` | `false` | `query` |
+`Authentication Required`
+| key | value | required | parameter type |
+| :----------------- | :---------------------------------- | :------- | :------------- |
+| `transaction_type` | `enum('topup withdrawal transfer')` | `false` | `query` |
 
 </details>
 
 <details>
   <summary><code>GET</code> <code><b>/user/transaction/all</b></code> <code>(returns the user's transaction by pagination)</code></summary>
 
-##### Parameters
+###
 
-> `Authentication Required`
-> | key | value | required | parameter type |
-> | :------------ | :-------- | :------- | :------------- |
-> | `page_number` | `integer` | `true` | `query` |
+`Authentication Required`
+| key | value | required | parameter type |
+| :------------ | :-------- | :------- | :------------- |
+| `page_number` | `integer` | `true` | `query` |
 
 </details>
 
 <details>
   <summary><code>GET</code> <code><b>/user/transaction/common</b></code> <code>(returns transactions logged in user has in common with specified user)</code></summary>
+###
 
-##### Parameters
-
-> `Authentication Required`
-> | key | value | required | parameter type |
-> | :-------- | :-------- | :------- | :------------- |
-> | `user_id` | `integer` | `true` | `query` |
+`Authentication Required`
+| key | value | required | parameter type |
+| :-------- | :-------- | :------- | :------------- |
+| `user_id` | `integer` | `true` | `query` |
 
 </details>
 
 <details>
   <summary><code>GET</code> <code><b>/user/profile/wallet</b></code> <code>(returns a user's profile from their wallet number)</code></summary>
 
-##### Parameters
+###
 
-> `Authentication Required`
-> | key | value | required | parameter type |
-> | :-------------- | :-------- | :------- | :------------- |
-> | `wallet_number` | `integer` | `true` | `query` |
+`Authentication Required`
+| key | value | required | parameter type |
+| :-------------- | :-------- | :------- | :------------- |
+| `wallet_number` | `integer` | `true` | `query` |
 
 </details>
 
 <details>
   <summary><code>GET</code> <code><b>/user/profile/id</b></code> <code>(returns a user's profile from ID)</code></summary>
 
-##### Parameters
+###
 
-> `Authentication Required`
-> | key | value | required | parameter type |
-> | :-------- | :-------- | :------- | :------------- |
-> | `user_id` | `integer` | `true` | `query` |
+`Authentication Required`
+| key | value | required | parameter type |
+| :-------- | :-------- | :------- | :------------- |
+| `user_id` | `integer` | `true` | `query` |
 
 </details>
 
 <details>
   <summary><code>GET</code> <code><b>/user/profile/by</b></code> <code>(returns users profile that match the key-value)</code></summary>
 
-##### Parameters
+###
 
-> `Authentication Required`
-> | key | value | required | parameter type |
-> | :------ | :------- | :------- | :------------- |
-> | `key` | `string` | `true` | `query` |
-> | `value` | `string` | `true` | `query` |
+`Authentication Required`
+| key | value | required | parameter type |
+| :------ | :------- | :------- | :------------- |
+| `key` | `string` | `true` | `query` |
+| `value` | `string` | `true` | `query` |
 
 </details>
 

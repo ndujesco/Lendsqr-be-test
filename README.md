@@ -197,9 +197,8 @@
 <details>
   <summary><code>GET</code> <code><b>/user/transaction/all</b></code> <code>(returns the user's transaction by pagination)</code></summary>
 
-###
+### `Authentication Required`
 
-`Authentication Required`
 | key | value | required | parameter type |
 | :------------ | :-------- | :------- | :------------- |
 | `page_number` | `integer` | `true` | `query` |

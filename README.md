@@ -333,7 +333,8 @@ yarn start:dev
 
 #####
 
-<img width="616" alt="AUTH TEST" src="https://github.com/ndujesco/lendsqr-be-test/assets/92054718/cc5f3ceb-10ca-442d-a98c-996d149476fd">
+<img width="632" alt="AUTH TEST" src="https://github.com/ndujesco/lendsqr-be-test/assets/92054718/08eebef9-81e4-4a6f-a8cc-9a23276763b4">
+
 
 </details>
 

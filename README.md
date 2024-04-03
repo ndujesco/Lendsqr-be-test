@@ -366,6 +366,7 @@ yarn start:dev
 
 #####
 
-<img width="490" alt="ALL TESTS" src="https://github.com/ndujesco/lendsqr-be-test/assets/92054718/0f953908-8081-4f42-a83d-4f3010116320">
+<img width="437" alt="ALL TESTS" src="https://github.com/ndujesco/lendsqr-be-test/assets/92054718/2a7db8ce-728f-4def-b2ba-e7461b75cb2f">
+
 
 </details>

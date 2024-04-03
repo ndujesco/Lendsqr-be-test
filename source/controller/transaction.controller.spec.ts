@@ -210,7 +210,7 @@ describe('TransactionController', () => {
     const verify = async () =>
       await TransactionController.verify(request, response);
 
-    it('verifies that the transaction weas successful', async () => {
+    it('verifies that the transaction was successful', async () => {
       const { payment_id } = request.body;
       const wallet = { balance };
 

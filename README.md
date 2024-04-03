@@ -8,11 +8,13 @@
 
 ## FEATURES
 
-- A user can create an account
-- A user can fund their account
-- A user can transfer funds to another user’s account
+- A user can create an account.
+- A user can fund their account.
+- A user can transfer funds to another user’s account.
 - A user can withdraw funds from their account.
-- A user with records in the Lendsqr Adjutor Karma blacklist cannot be onboarded
+- A user with records in the Lendsqr Adjutor Karma blacklist cannot be onboarded.
+- A user can view their transaction history.
+- A user can view other user's profile.
 
 ## TECH STACK
 
@@ -24,7 +26,7 @@
 ## LINKS
 
 - [POSTMAN DOCUMENTATION](https://documenter.getpostman.com/view/20990487/2sA35JzKQ2)
-- [LIVE BASE URL](https://ugochukwu-ndujekwu-lendsqr-be-test.onrender.com/api/v1)
+- [LIVE BASE_URL](https://ugochukwu-ndujekwu-lendsqr-be-test.onrender.com/api/v1)
 - [DATABASE DESIGN](https://dbdesigner.page.link/pt4ZVXxSuPuaB9pB9)
 
 ## DATABASE
